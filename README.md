@@ -8,7 +8,6 @@ Finding charts and validated comparison-star sequences for optical monitoring of
 - IC 5287
 - Mrk 845
 
-Mrk 493 is intentionally not included because there were no dedicated IAC80 reference-field observations for that object.
 
 ## Files
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://izviekova-blip.github.io/agn-reference-fields/sitemap.xml

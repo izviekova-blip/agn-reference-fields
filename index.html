@@ -3,10 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Finding charts and validated comparison-star sequences for optical monitoring of active galactic nuclei.">
-  <title>AGN Reference Fields</title>
+  <title>AGN Reference Fields | Finding charts & comparison stars</title>
+  <meta name="description" content="Finding charts and validated comparison-star sequences for Mrk 42, IC 5287 and Mrk 845, with J2000 coordinates, APASS DR9 photometry, IAC80/CAMELOT2 observing details, CSV and JSON data.">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="AGN finding chart, AGN comparison stars, AGN reference stars, Mrk 42 finding chart, IC 5287 reference stars, Mrk 845 comparison stars, IAC80, CAMELOT2, APASS DR9">
+  <link rel="canonical" href="https://izviekova-blip.github.io/agn-reference-fields/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AGN Reference Fields">
+  <meta property="og:description" content="Finding charts and validated comparison-star sequences for optical AGN monitoring.">
+  <meta property="og:url" content="https://izviekova-blip.github.io/agn-reference-fields/">
   <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
   <link rel="stylesheet" href="assets/style.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "AGN Reference Fields", "description": "Finding charts and validated comparison-star sequences for optical monitoring of active galactic nuclei.", "url": "https://izviekova-blip.github.io/agn-reference-fields/", "keywords": ["AGN", "finding charts", "comparison stars", "reference stars", "differential photometry", "IAC80", "CAMELOT2"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/reference-stars.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/fields.json"}]}</script>
   <script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
 </head>
 <body>
@@ -29,32 +37,48 @@
     <div class="metric"><strong>IAC80</strong><span>CAMELOT2 V-band monitoring</span></div>
   </div>
 
-  <h2 class="section-title" id="fields">Reference fields</h2>
+  <h2 class="section-title">Indexed object pages</h2>
+  <p class="footer-note">Dedicated static pages make each finding chart and comparison-star sequence directly discoverable by object name in search engines.</p>
+  <div class="summary" style="margin-top:16px">
+    <article class="metric">
+      <strong><a href="mrk42.html">Mrk 42</a></strong>
+      <span>CGCG 243-024 · 2MIG 1646</span>
+      <p style="margin:.55rem 0 0">Finding chart + 4 comparison stars · IAC80 / CAMELOT2 · V band</p>
+    </article>
+<article class="metric">
+      <strong><a href="ic5287.html">IC 5287</a></strong>
+      <span>2MIG 3128</span>
+      <p style="margin:.55rem 0 0">Finding chart + 3 comparison stars · IAC80 / CAMELOT2 · V band</p>
+    </article>
+<article class="metric">
+      <strong><a href="mrk845.html">Mrk 845</a></strong>
+      <span>MCG+09-25-022 · 2MIG 2067</span>
+      <p style="margin:.55rem 0 0">Finding chart + 4 comparison stars · IAC80 / CAMELOT2 · V band</p>
+    </article>
+  </div>
+
+  <h2 class="section-title" id="fields">Interactive reference fields</h2>
   <div class="controls">
     <input class="search" id="search" type="search" placeholder="Search by object or alias…" aria-label="Search fields">
     <a class="small-button" href="data/reference-stars.csv" download>CSV</a>
     <a class="small-button" href="data/fields.json" download>JSON</a>
   </div>
+  <div id="cards"><p>Loading reference fields…</p></div>
 
-  <div id="cards">
-    <p>Loading reference fields…</p>
-  </div>
-
-  <h2 class="section-title">How to use this resource</h2>
+  <h2 class="section-title">What this resource contains</h2>
   <p class="footer-note">
-    Coordinates are J2000. The listed comparison-star magnitudes are catalogue values used to define the local sequences in the cited studies.
-    The interactive finding charts use CDS Aladin Lite and a DSS2 colour background. For reproducible photometry, consult the cited paper for
-    the reduction, aperture, quality-control, and variability-test details relevant to each field.
+    AGN finding charts, local comparison-star sequences, reference-star J2000 coordinates,
+    APASS DR9 V-band photometry, IAC80/CAMELOT2 observing information, and machine-readable CSV/JSON tables.
+    Current fields include Mrk 42, IC 5287, and Mrk 845.
   </p>
 </main>
 
 <footer>
   <div>
-    AGN Reference Fields · maintained as a lightweight reproducibility resource for optical monitoring.
-    Aladin Lite imagery is served by CDS; catalogue photometry is credited per field.
+    AGN Reference Fields · <a href="https://github.com/izviekova-blip/agn-reference-fields">GitHub repository</a> ·
+    <a href="sitemap.xml">sitemap</a>
   </div>
 </footer>
-
 <script src="assets/app.js"></script>
 </body>
 </html>

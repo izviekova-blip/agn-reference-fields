@@ -1,0 +1,205 @@
+[
+  {
+    "slug": "mrk42",
+    "name": "Mrk 42",
+    "aliases": "CGCG 243-024 · 2MIG 1646",
+    "ra_sex": "11:53:41.76",
+    "dec_sex": "+46:12:42.6",
+    "ra_deg": 178.424,
+    "dec_deg": 46.211833,
+    "instrument": "IAC80 / CAMELOT2",
+    "filter": "V",
+    "aperture": "5 px = 1.61″",
+    "field_fov_deg": 0.2,
+    "observing_summary": "Three consecutive nights in May 2025; 60–70 s exposures; ≈4 h per night.",
+    "reference_note": "The star closest in brightness to the target was used as the statistical reference; the source text does not assign a fixed star number to that role.",
+    "validation_note": "Comparison candidates were selected for brightness and isolation, checked against APASS DR9 and Gaia DR3, and known/suspected variables were excluded using VSX.",
+    "paper_title": "The 2MIG isolated AGNs. 3. Optical–IR variability and dust reverberation in the NLSy1 galaxies Mrk 42 and Mrk 493",
+    "paper_short": "Izviekova et al. (2026)",
+    "paper_url": "https://arxiv.org/abs/2605.06517",
+    "status": "Published/preprint",
+    "stars": [
+      {
+        "id": 1,
+        "ra": 178.397736,
+        "dec": 46.157415,
+        "V": 16.091,
+        "eV": 0.017,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 2,
+        "ra": 178.446143,
+        "dec": 46.272907,
+        "V": 14.536,
+        "eV": 0.038,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 3,
+        "ra": 178.476516,
+        "dec": 46.265684,
+        "V": 14.543,
+        "eV": 0.048,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 4,
+        "ra": 178.34286,
+        "dec": 46.25255,
+        "V": 13.793,
+        "eV": 0.05,
+        "catalog": "APASS DR9"
+      }
+    ],
+    "nights": [
+      {
+        "night": "2025-05-20/21",
+        "exp": "60 s",
+        "duration": "4.25 h",
+        "frames": "≈254"
+      },
+      {
+        "night": "2025-05-21/22",
+        "exp": "60 s",
+        "duration": "3.97 h",
+        "frames": "≈238"
+      },
+      {
+        "night": "2025-05-22/23",
+        "exp": "70 s",
+        "duration": "4.04 h",
+        "frames": "≈207"
+      }
+    ]
+  },
+  {
+    "slug": "ic5287",
+    "name": "IC 5287",
+    "aliases": "2MIG 3128",
+    "ra_sex": "23:09:20.28",
+    "dec_sex": "+00:45:23.0",
+    "ra_deg": 347.3345,
+    "dec_deg": 0.756389,
+    "instrument": "IAC80 / CAMELOT2",
+    "filter": "V",
+    "aperture": "9 px = 2.90″",
+    "field_fov_deg": 0.2,
+    "observing_summary": "One 3.0 h sequence on 2025 June 30/July 1; 90 s exposures; 101 frames retained.",
+    "reference_note": "Comparison star 1 was adopted as the primary statistical reference. The variability classification was unchanged when stars 2 or 3 were used instead.",
+    "validation_note": "Three local comparison stars from APASS DR9; leave-one-out stability tests were applied. The adopted aperture minimized seeing dependence.",
+    "paper_title": "The 2MIG isolated AGNs – 5. Hot-dust reverberation and spectroscopic constraints on BLR–dust scales in IC 5287 and Mrk 845",
+    "paper_short": "Izviekova et al. (2026, manuscript)",
+    "paper_url": "",
+    "status": "Manuscript",
+    "stars": [
+      {
+        "id": 1,
+        "ra": 347.296561,
+        "dec": 0.724682,
+        "V": 15.319,
+        "eV": 0.079,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 2,
+        "ra": 347.278866,
+        "dec": 0.755341,
+        "V": 15.371,
+        "eV": 0.071,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 3,
+        "ra": 347.266787,
+        "dec": 0.734029,
+        "V": 15.007,
+        "eV": 0.051,
+        "catalog": "APASS DR9"
+      }
+    ],
+    "nights": [
+      {
+        "night": "2025-06-30/07-01",
+        "exp": "90 s",
+        "duration": "3.00 h",
+        "frames": "101 used / 102 acquired"
+      }
+    ]
+  },
+  {
+    "slug": "mrk845",
+    "name": "Mrk 845",
+    "aliases": "MCG+09-25-022 · 2MIG 2067",
+    "ra_sex": "15:07:45.04",
+    "dec_sex": "+51:27:09.6",
+    "ra_deg": 226.937667,
+    "dec_deg": 51.452667,
+    "instrument": "IAC80 / CAMELOT2",
+    "filter": "V",
+    "aperture": "9 px = 2.90″",
+    "field_fov_deg": 0.2,
+    "observing_summary": "Three consecutive nights in May 2025; ≈4 h per night; 112–125 frames retained after quality control.",
+    "reference_note": "Primary statistical references: star 3 on 2025 May 20; star 4 on May 21 and 22.",
+    "validation_note": "Four local APASS DR9 comparison stars; leave-one-out stability checks were applied. A common 9-pixel aperture was used on all three nights.",
+    "paper_title": "The 2MIG isolated AGNs – 5. Hot-dust reverberation and spectroscopic constraints on BLR–dust scales in IC 5287 and Mrk 845",
+    "paper_short": "Izviekova et al. (2026, manuscript)",
+    "paper_url": "",
+    "status": "Manuscript",
+    "stars": [
+      {
+        "id": 1,
+        "ra": 226.873709,
+        "dec": 51.488488,
+        "V": 16.418,
+        "eV": 0.047,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 2,
+        "ra": 226.970757,
+        "dec": 51.447272,
+        "V": 16.118,
+        "eV": 0.065,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 3,
+        "ra": 227.02507,
+        "dec": 51.447829,
+        "V": 13.649,
+        "eV": 0.06,
+        "catalog": "APASS DR9"
+      },
+      {
+        "id": 4,
+        "ra": 227.03936,
+        "dec": 51.484968,
+        "V": 16.621,
+        "eV": null,
+        "catalog": "APASS DR9"
+      }
+    ],
+    "nights": [
+      {
+        "night": "2025-05-20",
+        "exp": "60 s",
+        "duration": "4.25 h",
+        "frames": "125 used / ≈234 acquired"
+      },
+      {
+        "night": "2025-05-21",
+        "exp": "60 s",
+        "duration": "3.97 h",
+        "frames": "116 used / ≈238 acquired"
+      },
+      {
+        "night": "2025-05-22",
+        "exp": "70 s",
+        "duration": "4.04 h",
+        "frames": "112 used / ≈207 acquired"
+      }
+    ],
+    "extra_note": "APASS DR9 lists σV = 0.000 mag for star 4. This is not interpreted as a physically zero photometric uncertainty and is therefore shown here as unavailable."
+  }
+]

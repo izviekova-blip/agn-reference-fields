@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Finding charts and validated comparison-star sequences for optical monitoring of active galactic nuclei.">
+  <title>AGN Reference Fields</title>
+  <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">Open observing resource</div>
+    <h1>AGN Reference Fields</h1>
+    <p class="lede">Finding charts and validated comparison-star sequences for differential optical photometry of active galactic nuclei.</p>
+    <div class="header-actions">
+      <a class="button primary" href="data/reference-stars.csv" download>Download reference-star CSV</a>
+      <a class="button" href="#fields">Browse fields</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="summary" aria-label="Resource summary">
+    <div class="metric"><strong id="nfields">3</strong><span>AGN fields</span></div>
+    <div class="metric"><strong id="nstars">11</strong><span>validated comparison stars</span></div>
+    <div class="metric"><strong>IAC80</strong><span>CAMELOT2 V-band monitoring</span></div>
+  </div>
+
+  <h2 class="section-title" id="fields">Reference fields</h2>
+  <div class="controls">
+    <input class="search" id="search" type="search" placeholder="Search by object or alias…" aria-label="Search fields">
+    <a class="small-button" href="data/reference-stars.csv" download>CSV</a>
+    <a class="small-button" href="data/fields.json" download>JSON</a>
+  </div>
+
+  <div id="cards">
+    <p>Loading reference fields…</p>
+  </div>
+
+  <h2 class="section-title">How to use this resource</h2>
+  <p class="footer-note">
+    Coordinates are J2000. The listed comparison-star magnitudes are catalogue values used to define the local sequences in the cited studies.
+    The interactive finding charts use CDS Aladin Lite and a DSS2 colour background. For reproducible photometry, consult the cited paper for
+    the reduction, aperture, quality-control, and variability-test details relevant to each field.
+  </p>
+</main>
+
+<footer>
+  <div>
+    AGN Reference Fields · maintained as a lightweight reproducibility resource for optical monitoring.
+    Aladin Lite imagery is served by CDS; catalogue photometry is credited per field.
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

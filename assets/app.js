@@ -39,7 +39,7 @@ function renderCard(f) {
       <div class="field-grid">
         <div class="chart-panel">
           <div class="aladin" id="aladin-${esc(f.slug)}"></div>
-          <div class="chart-help">Interactive sky view. Target = green marker; comparison stars = red markers. Pan/zoom to inspect the field.</div>
+          <div class="chart-help">Interactive sky view. The AGN is labelled “AGN”; comparison stars are labelled 1, 2, 3… to match the table below. Click a marker for its details.</div>
         </div>
         <div class="details">
           <div class="meta">
@@ -122,18 +122,45 @@ function setupAladin() {
       showSimbadPointerControl: true
     });
 
-    const targetCat = A.catalog({name: `${f.name} nucleus`, sourceSize: 18, color: '#19d28b'});
+    const targetCat = A.catalog({
+      name: `${f.name} nucleus`,
+      sourceSize: 18,
+      color: '#19d28b',
+      shape: 'cross',
+      labelColumn: 'label',
+      displayLabel: true,
+      labelColor: '#7CFFCB',
+      labelFont: 'bold 14px Arial',
+      onClick: 'showPopup'
+    });
     aladin.addCatalog(targetCat);
     targetCat.addSources([A.source(f.ra_deg, f.dec_deg, {
+      label: 'AGN',
       name: f.name,
+      coordinates: `${f.ra_deg.toFixed(6)}, ${f.dec_deg.toFixed(6)}`,
       description: `${f.name} nucleus (J2000)`
     })]);
 
-    const refCat = A.catalog({name: 'Comparison stars', sourceSize: 16, color: '#ff5a5f'});
+    const refCat = A.catalog({
+      name: 'Comparison stars',
+      sourceSize: 18,
+      color: '#ff5a5f',
+      shape: 'square',
+      labelColumn: 'label',
+      displayLabel: true,
+      labelColor: '#FFE66D',
+      labelFont: 'bold 17px Arial',
+      onClick: 'showPopup'
+    });
     aladin.addCatalog(refCat);
     refCat.addSources(f.stars.map(s => A.source(s.ra, s.dec, {
-      name: `${f.name} ref ${s.id}`,
-      description: `Star ${s.id}; V=${s.V.toFixed(3)} mag; RA=${s.ra.toFixed(6)}, Dec=${s.dec.toFixed(6)}`
+      label: String(s.id),
+      star_id: `Reference star ${s.id}`,
+      V_mag: s.V.toFixed(3),
+      sigma_V: s.eV == null ? 'not available' : s.eV.toFixed(3),
+      catalogue: s.catalog,
+      coordinates: `${s.ra.toFixed(6)}, ${s.dec.toFixed(6)}`,
+      description: `${f.name}: comparison star ${s.id}`
     })));
   });
 }

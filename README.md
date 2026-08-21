@@ -50,3 +50,13 @@ https://izviekova-blip.github.io/agn-reference-fields/sitemap.xml
 The finding-chart numbering and comparison-star selections follow the cited observing studies/manuscripts. APASS DR9 supplies the catalogue photometry. The website is a convenience and reproducibility resource; the cited papers remain the authoritative source for the observing reduction, quality-control tests, and variability classifications.
 
 If VizieR catalogue access is used in downstream work, please follow the acknowledgement requested by CDS/VizieR.
+
+## Static finding charts
+
+Version 1.2 includes clean static finding charts for all three fields:
+
+- `finding_charts/mrk42_finding_chart_clean.png`
+- `finding_charts/ic5287_finding_chart_clean.png`
+- `finding_charts/mrk845_finding_chart_clean.png`
+
+The AGN is marked by a green cross. Comparison stars are marked by red circles and numbered consistently with the reference-star tables. Photometric magnitudes are not repeated on the charts because the full APASS DR9 multiband photometry and uncertainties are provided in the machine-readable tables.

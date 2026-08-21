@@ -1,23 +1,37 @@
-
 const DATA_URL = 'data/fields.json';
+const APASS_VIZIER_URL = 'https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=II%2F336%2Fapass9';
+const APASS_PROJECT_URL = 'https://www.aavso.org/apass';
 let fields = [];
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 }
-function fmtErr(v) {
-  return v === null || v === undefined ? '—' : Number(v).toFixed(3);
+function fmt(v) {
+  return v === null || v === undefined || Number.isNaN(Number(v)) ? '—' : Number(v).toFixed(3);
+}
+function fmtPhot(mag, err) {
+  if (mag === null || mag === undefined || Number.isNaN(Number(mag))) return '—';
+  const m = Number(mag).toFixed(3);
+  if (err === null || err === undefined || Number.isNaN(Number(err)) || Number(err) <= 0) return `${m} ± —`;
+  return `${m} ± ${Number(err).toFixed(3)}`;
+}
+function apassQueryUrl(s) {
+  const c = `${Number(s.ra).toFixed(6)} ${Number(s.dec).toFixed(6)},eq=J2000,rs=3`;
+  return `https://vizier.cds.unistra.fr/viz-bin/VizieR/VizieR-6?-c=${encodeURIComponent(c)}&-source=II%2F336%2Fapass9`;
 }
 function renderCard(f) {
   const rows = f.stars.map(s => `
     <tr>
       <td><strong>${s.id}</strong></td>
-      <td class="coord">${s.ra.toFixed(6)}</td>
-      <td class="coord">${s.dec.toFixed(6)}</td>
-      <td>${s.V.toFixed(3)}</td>
-      <td>${fmtErr(s.eV)}</td>
-      <td>${esc(s.catalog)}</td>
-      <td><button class="copy" data-copy="${s.ra.toFixed(6)} ${s.dec.toFixed(6)}">Copy</button></td>
+      <td class="coord">${Number(s.ra).toFixed(6)}</td>
+      <td class="coord">${Number(s.dec).toFixed(6)}</td>
+      <td>${fmtPhot(s.B, s.eB)}</td>
+      <td><strong>${fmtPhot(s.V, s.eV)}</strong></td>
+      <td>${fmtPhot(s.g, s.eg)}</td>
+      <td>${fmtPhot(s.r, s.er)}</td>
+      <td>${fmtPhot(s.i, s.ei)}</td>
+      <td><a href="${apassQueryUrl(s)}" target="_blank" rel="noopener">APASS DR9</a></td>
+      <td><button class="copy" data-copy="${Number(s.ra).toFixed(6)} ${Number(s.dec).toFixed(6)}">Copy</button></td>
     </tr>`).join('');
 
   const nights = f.nights.map(n => `
@@ -44,21 +58,42 @@ function renderCard(f) {
         <div class="details">
           <div class="meta">
             <div class="meta-item"><span>Target (J2000)</span><strong>${esc(f.ra_sex)} &nbsp; ${esc(f.dec_sex)}</strong></div>
-            <div class="meta-item"><span>Degrees</span><strong class="coord">${f.ra_deg.toFixed(6)}, ${f.dec_deg.toFixed(6)}</strong></div>
+            <div class="meta-item"><span>Degrees</span><strong class="coord">${Number(f.ra_deg).toFixed(6)}, ${Number(f.dec_deg).toFixed(6)}</strong></div>
             <div class="meta-item"><span>Instrument</span><strong>${esc(f.instrument)}</strong></div>
-            <div class="meta-item"><span>Filter / aperture</span><strong>${esc(f.filter)} · ${esc(f.aperture)}</strong></div>
+            <div class="meta-item"><span>Observed filter / aperture</span><strong>${esc(f.filter)} · ${esc(f.aperture)}</strong></div>
           </div>
           <p>${esc(f.observing_summary)}</p>
           <div class="note"><strong>Reference-star use.</strong> ${esc(f.reference_note)}</div>
           <div class="note"><strong>Validation.</strong> ${esc(f.validation_note)}</div>
           ${f.extra_note ? `<div class="note"><strong>Catalogue note.</strong> ${esc(f.extra_note)}</div>` : ''}
+          <div class="note">
+            <strong>Catalogue photometry.</strong>
+            Reference-star photometry is from <a href="${APASS_VIZIER_URL}" target="_blank" rel="noopener">APASS DR9 in VizieR</a>
+            (<a href="${APASS_PROJECT_URL}" target="_blank" rel="noopener">AAVSO APASS project</a>).
+            Johnson <em>B</em> and <em>V</em> are Vega magnitudes; Sloan <em>g′r′i′</em> are AB magnitudes.
+            The cited IAC80 analyses used the <em>V</em> band; the additional APASS bands are provided for future reuse.
+          </div>
         </div>
       </div>
       <div class="star-table-wrap">
+        <h3>Comparison-star sequence — APASS DR9 multiband photometry</h3>
         <table>
-          <thead><tr><th>ID</th><th>RA (deg)</th><th>Dec (deg)</th><th>V</th><th>σV</th><th>Catalogue</th><th></th></tr></thead>
+          <thead>
+            <tr>
+              <th>ID</th><th>RA (deg)</th><th>Dec (deg)</th>
+              <th>B ± σB<br><small>Vega</small></th>
+              <th>V ± σV<br><small>Vega · used</small></th>
+              <th>g′ ± σg′<br><small>AB</small></th>
+              <th>r′ ± σr′<br><small>AB</small></th>
+              <th>i′ ± σi′<br><small>AB</small></th>
+              <th>Catalogue</th><th></th>
+            </tr>
+          </thead>
           <tbody>${rows}</tbody>
         </table>
+        <p class="footer-note" style="margin:10px 0 0">
+          “—” means that the catalogue value or a usable uncertainty is unavailable. Catalogue-reported zero uncertainties are not interpreted as physically zero.
+        </p>
       </div>
       <div class="subsection">
         <h3>Observing log</h3>
@@ -137,7 +172,7 @@ function setupAladin() {
     targetCat.addSources([A.source(f.ra_deg, f.dec_deg, {
       label: 'AGN',
       name: f.name,
-      coordinates: `${f.ra_deg.toFixed(6)}, ${f.dec_deg.toFixed(6)}`,
+      coordinates: `${Number(f.ra_deg).toFixed(6)}, ${Number(f.dec_deg).toFixed(6)}`,
       description: `${f.name} nucleus (J2000)`
     })]);
 
@@ -156,10 +191,13 @@ function setupAladin() {
     refCat.addSources(f.stars.map(s => A.source(s.ra, s.dec, {
       label: String(s.id),
       star_id: `Reference star ${s.id}`,
-      V_mag: s.V.toFixed(3),
-      sigma_V: s.eV == null ? 'not available' : s.eV.toFixed(3),
-      catalogue: s.catalog,
-      coordinates: `${s.ra.toFixed(6)}, ${s.dec.toFixed(6)}`,
+      B_mag: fmtPhot(s.B, s.eB),
+      V_mag: fmtPhot(s.V, s.eV),
+      g_mag: fmtPhot(s.g, s.eg),
+      r_mag: fmtPhot(s.r, s.er),
+      i_mag: fmtPhot(s.i, s.ei),
+      catalogue: s.catalog || 'APASS DR9',
+      coordinates: `${Number(s.ra).toFixed(6)}, ${Number(s.dec).toFixed(6)}`,
       description: `${f.name}: comparison star ${s.id}`
     })));
   });

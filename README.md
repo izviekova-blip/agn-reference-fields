@@ -10,6 +10,16 @@ Public site: https://izviekova-blip.github.io/agn-reference-fields/
 - [IC 5287](https://izviekova-blip.github.io/agn-reference-fields/ic5287.html)
 - [Mrk 845](https://izviekova-blip.github.io/agn-reference-fields/mrk845.html)
 
+## Static finding charts
+
+Version 1.2 includes clean static finding charts for all three fields:
+
+- `finding_charts/mrk42_finding_chart_clean.png`
+- `finding_charts/ic5287_finding_chart_clean.png`
+- `finding_charts/mrk845_finding_chart_clean.png`
+
+The AGN is marked by a green cross. Comparison stars are marked by red circles and numbered consistently with the reference-star tables. Photometric magnitudes are not repeated on the charts because the full APASS DR9 multiband photometry and uncertainties are provided in the machine-readable tables.
+
 ## Reference-star photometry
 
 Reference-star catalogue photometry is taken from **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
@@ -51,12 +61,4 @@ The finding-chart numbering and comparison-star selections follow the cited obse
 
 If VizieR catalogue access is used in downstream work, please follow the acknowledgement requested by CDS/VizieR.
 
-## Static finding charts
 
-Version 1.2 includes clean static finding charts for all three fields:
-
-- `finding_charts/mrk42_finding_chart_clean.png`
-- `finding_charts/ic5287_finding_chart_clean.png`
-- `finding_charts/mrk845_finding_chart_clean.png`
-
-The AGN is marked by a green cross. Comparison stars are marked by red circles and numbered consistently with the reference-star tables. Photometric magnitudes are not repeated on the charts because the full APASS DR9 multiband photometry and uncertainties are provided in the machine-readable tables.

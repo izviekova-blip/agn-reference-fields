@@ -43,8 +43,11 @@ function starRows(f) {
         <td><strong>${s.id}</strong></td>
         <td class="coord">${hasCoord(s) ? Number(s.ra).toFixed(6) : '—'}</td>
         <td class="coord">${hasCoord(s) ? Number(s.dec).toFixed(6) : '—'}</td>
-        <td>${fmtPhot(s.R, s.eR)}</td>
         <td><strong>${fmtPhot(s.V, s.eV)}</strong></td>
+        <td>${fmtPhot(s.g, s.eg)}</td>
+        <td>${fmtPhot(s.r, s.er)}</td>
+        <td>${fmtPhot(s.i, s.ei)}</td>
+        <td>${fmtPhot(s.R, s.eR)}</td>
         <td>${catalogueCell(s)}</td>
         <td>${copyCell(s)}</td>
       </tr>`).join('');
@@ -68,18 +71,23 @@ function starTable(f) {
   if (f.multiband === false) {
     return `
       <div class="star-table-wrap">
-        <h3>Comparison-star sequence — working R/V calibration</h3>
+        <h3>Comparison-star sequence — APASS DR9 + Lupton R estimate</h3>
         <table>
           <thead>
             <tr>
               <th>ID</th><th>RA (deg)</th><th>Dec (deg)</th>
-              <th>R ± σR</th><th>V ± σV</th><th>Source</th><th></th>
+              <th>V ± σV<br><small>APASS · Vega</small></th>
+              <th>g′ ± σg′<br><small>APASS · AB</small></th>
+              <th>r′ ± σr′<br><small>APASS · AB</small></th>
+              <th>i′ ± σi′<br><small>APASS · AB</small></th>
+              <th>R ± σR<br><small>Lupton r−i</small></th>
+              <th>Catalogue</th><th></th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
         </table>
         <p class="footer-note" style="margin:10px 0 0">
-          “—” marks values not yet imported into the repository. The numbered stars and adopted V magnitudes are also shown on the supplied static finding chart.
+          V, g′, r′ and i′ are APASS DR9 catalogue values. R is estimated from Sloan r′ and i′ using the Lupton transformation. “—” denotes a catalogue-reported zero or otherwise unavailable uncertainty and is not interpreted as physically zero.
         </p>
       </div>`;
   }
@@ -107,7 +115,7 @@ function starTable(f) {
 }
 function catalogueNote(f) {
   if (f.multiband === false) {
-    return `<div class="note"><strong>Photometric sequence.</strong> ${esc(f.photometry_system_note || '')}</div>`;
+    return `<div class="note"><strong>Catalogue photometry.</strong> ${esc(f.photometry_system_note || '')} APASS DR9 is available through <a href="${APASS_VIZIER_URL}" target="_blank" rel="noopener">VizieR</a>.</div>`;
   }
   return `<div class="note">
     <strong>Catalogue photometry.</strong>
@@ -284,6 +292,7 @@ function setupAladin() {
       g_mag: fmtPhot(s.g, s.eg),
       r_mag: fmtPhot(s.r, s.er),
       i_mag: fmtPhot(s.i, s.ei),
+      R_est: fmtPhot(s.R, s.eR),
       catalogue: s.catalog || 'APASS DR9',
       coordinates: `${Number(s.ra).toFixed(6)}, ${Number(s.dec).toFixed(6)}`,
       description: `${f.name}: comparison star ${s.id}`

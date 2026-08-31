@@ -30,9 +30,8 @@ Comparison-star coordinates and V-band values correspond to the sequences used i
 ## IC 1495
 
 Izviekova, I. O. et al. (2026).
-*IC 1495: a heavily obscured, Compton-thin Seyfert nucleus in an isolated galaxy.*
-Manuscript.
+IC 1495 multiwavelength analysis. Manuscript in preparation.
 
 The IAC80/CAMELOT2 observations were obtained on 2025 October 13 (26 × 250 s, Johnson/Bessell R) and 2025 October 14 (35 × 300 s, Johnson/Bessell V). The fiducial photometric aperture is 5 pixels = 1.61 arcsec.
 
-The current website entry preserves the numbered comparison-star sequence and the working R/V magnitudes used in the IAC80 reductions. The supplied V-band finding chart gives V = 14.544, 15.816 and 13.876 for stars 1, 2 and 3. The corresponding working R values are 13.994, 15.374 and 13.489. J2000 star coordinates and catalogue uncertainties are pending import from the original comparison-star table; the site does not derive them from detector coordinates.
+The current website entry preserves the numbered comparison-star sequence and the working R/V magnitudes used in the IAC80 reductions. The supplied V-band finding chart gives V = 14.544, 15.816 and 13.876 for stars 1, 2 and 3. The corresponding working R values are 13.994, 15.374 and 13.489. J2000 star coordinates and catalogue uncertainties will be added from the original comparison-star catalogue table when it is available to the repository workflow.

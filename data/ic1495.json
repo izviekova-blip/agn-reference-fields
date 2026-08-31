@@ -11,13 +11,13 @@
   "aperture": "5 px = 1.61″ (fiducial)",
   "field_fov_deg": 0.2,
   "observing_summary": "Two consecutive IAC80/CAMELOT2 sequences: 26 × 250 s in R on 2025 October 13 and 35 × 300 s in V on 2025 October 14.",
-  "reference_note": "Three numbered field stars were used for differential photometry. The adopted working magnitudes are R = 13.994, 15.374, 13.489 and V = 14.544, 15.816, 13.876 for stars 1–3, respectively.",
-  "validation_note": "The numbering and R/V values follow the supplied IC 1495 finding chart and the IAC80 photometry working sequence. J2000 coordinates and catalogue uncertainties for the three comparison stars are not included in this release because the coordinate table has not yet been imported into the repository.",
-  "paper_title": "IC 1495: a heavily obscured, Compton-thin Seyfert nucleus in an isolated galaxy",
+  "reference_note": "Three numbered field stars were used for differential photometry. The working magnitudes adopted in the reductions are R = 13.994, 15.374, 13.489 and V = 14.544, 15.816, 13.876 for stars 1–3, respectively.",
+  "validation_note": "The numbering and R/V values follow the supplied IC 1495 finding chart and the IAC80 photometry working sequence. The J2000 comparison-star coordinates and catalogue uncertainties will be added from the original comparison-star table when that table is available to the repository workflow.",
+  "paper_title": "IC 1495 multiwavelength analysis",
   "paper_short": "Izviekova et al. (2026, manuscript)",
   "paper_url": "",
   "status": "Manuscript",
-  "static_chart": "finding_charts/ic1495_finding_chart.png",
+  "static_chart": "finding_charts/ic1495_finding_chart.jpg",
   "multiband": false,
   "star_coordinates_available": false,
   "stars": [
@@ -67,6 +67,6 @@
     }
   ],
   "photometry_catalog": "IAC80 working field calibration",
-  "photometry_system_note": "The R and V magnitudes listed here are the working comparison-star values used for the IC 1495 IAC80 reductions. Catalogue-coordinate provenance and magnitude uncertainties will be added when the original comparison-star table is imported.",
-  "extra_note": "This field is newly added. The supplied static chart already identifies stars 1–3 and lists the adopted V magnitudes."
+  "photometry_system_note": "The R and V magnitudes listed here are the working comparison-star values used for the IC 1495 IAC80 reductions. Catalogue-coordinate provenance and magnitude uncertainties will be added from the original comparison-star table.",
+  "extra_note": "The supplied static chart identifies stars 1–3 and lists the adopted V magnitudes."
 }

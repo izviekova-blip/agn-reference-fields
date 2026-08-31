@@ -2,14 +2,14 @@
 
 ## Catalogue photometry: APASS DR9
 
-Reference-star photometry for Mrk 42, IC 5287 and Mrk 845 is drawn from the **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
+Reference-star photometry in this resource is drawn from the **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
 
 - VizieR: https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=II%2F336%2Fapass9
 - AAVSO APASS: https://www.aavso.org/apass
 - Bibliographic source: Henden, A. A., Templeton, M., Terrell, D., Smith, T. C., Levine, S., & Welch, D. (2016), `2015AAS...22533616H`
 - VizieR service DOI: https://doi.org/10.26093/cds/vizier
 
-APASS DR9 provides Johnson B and V magnitudes and Sloan g′, r′, i′ magnitudes for the main survey. B and V are in the Vega system; g′, r′, i′ are in the AB system. The cited IAC80 analyses of these fields used V; the additional bands are included for future reuse.
+APASS DR9 provides Johnson B and V magnitudes and Sloan g′, r′, i′ magnitudes for the main survey. B and V are in the Vega system; g′, r′, i′ are in the AB system.
 
 ## Mrk 42
 
@@ -34,4 +34,14 @@ IC 1495 multiwavelength analysis. Manuscript in preparation.
 
 The IAC80/CAMELOT2 observations were obtained on 2025 October 13 (26 × 250 s, Johnson/Bessell R) and 2025 October 14 (35 × 300 s, Johnson/Bessell V). The fiducial photometric aperture is 5 pixels = 1.61 arcsec.
 
-The current website entry preserves the numbered comparison-star sequence and the working R/V magnitudes used in the IAC80 reductions. The supplied V-band finding chart gives V = 14.544, 15.816 and 13.876 for stars 1, 2 and 3. The corresponding working R values are 13.994, 15.374 and 13.489. J2000 star coordinates and catalogue uncertainties will be added from the original comparison-star catalogue table when it is available to the repository workflow.
+The IC 1495 comparison sequence is based on the supplied APASS DR9 standard-star tables. The three stars have J2000 positions:
+
+- star 1: RA = 352.644555°, Dec = −13.503099°
+- star 2: RA = 352.739712°, Dec = −13.531192°
+- star 3: RA = 352.707451°, Dec = −13.544119°
+
+Direct APASS V magnitudes are 14.544 ± 0.037, 15.816 and 13.876 ± 0.016 for stars 1–3. The supplied table also gives APASS B−V, g′, r′ and i′ photometry. For the R-band IAC80 reduction, R is estimated from Sloan r′ and i′ using the Lupton transformation, giving 13.994 ± 0.039, 15.374 ± 0.025 and 13.489 ± 0.023 mag. These R values are transformed estimates and are not direct APASS R measurements.
+
+As an internal consistency check, V transformed independently from APASS g′ and r′ is 14.573 ± 0.033, 15.844 ± 0.035 and 13.914 ± 0.030 mag, differing from the direct APASS V values by 0.029, 0.028 and 0.038 mag, respectively.
+
+Catalogue-reported zero formal uncertainties for star 2 are retained as raw zero values in the machine-readable table and displayed publicly as unavailable uncertainties.

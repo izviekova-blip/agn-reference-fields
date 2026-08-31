@@ -205,6 +205,26 @@ async function loadFields() {
   return [...mainFields, ...extras];
 }
 
+function showAladinError(message = 'Interactive chart could not load. Target coordinates and static finding charts remain available.') {
+  document.querySelectorAll('.chart-help').forEach(el => el.textContent = message);
+}
+
+async function initAladinWhenReady() {
+  if (!window.A) {
+    showAladinError();
+    return;
+  }
+  try {
+    if (A.init && typeof A.init.then === 'function') {
+      await A.init;
+    }
+    setupAladin();
+  } catch (err) {
+    console.error('Aladin Lite initialization failed', err);
+    showAladinError('Interactive chart could not initialize. Target coordinates and static finding charts remain available.');
+  }
+}
+
 async function init() {
   fields = await loadFields();
   document.getElementById('cards').innerHTML = fields.map(renderCard).join('');
@@ -228,15 +248,10 @@ async function init() {
     });
   });
 
-  setupAladin();
+  await initAladinWhenReady();
 }
 
 function setupAladin() {
-  if (!window.A) {
-    document.querySelectorAll('.chart-help').forEach(el => el.textContent =
-      'Interactive chart could not load. Target coordinates and static finding charts remain available.');
-    return;
-  }
   fields.forEach(f => {
     const target = `${f.ra_deg} ${f.dec_deg}`;
     const aladin = A.aladin(`#aladin-${f.slug}`, {

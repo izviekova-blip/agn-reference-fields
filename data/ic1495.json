@@ -1,0 +1,72 @@
+{
+  "slug": "ic1495",
+  "name": "IC 1495",
+  "aliases": "IC 5327 · MCG−02−59−024 · PGC 71631 · 2MIG 3166",
+  "ra_sex": "23:30:47.73",
+  "dec_sex": "−13:29:07.6",
+  "ra_deg": 352.698875,
+  "dec_deg": -13.48544444,
+  "instrument": "IAC80 / CAMELOT2",
+  "filter": "R, V",
+  "aperture": "5 px = 1.61″ (fiducial)",
+  "field_fov_deg": 0.2,
+  "observing_summary": "Two consecutive IAC80/CAMELOT2 sequences: 26 × 250 s in R on 2025 October 13 and 35 × 300 s in V on 2025 October 14.",
+  "reference_note": "Three numbered field stars were used for differential photometry. The adopted working magnitudes are R = 13.994, 15.374, 13.489 and V = 14.544, 15.816, 13.876 for stars 1–3, respectively.",
+  "validation_note": "The numbering and R/V values follow the supplied IC 1495 finding chart and the IAC80 photometry working sequence. J2000 coordinates and catalogue uncertainties for the three comparison stars are not included in this release because the coordinate table has not yet been imported into the repository.",
+  "paper_title": "IC 1495: a heavily obscured, Compton-thin Seyfert nucleus in an isolated galaxy",
+  "paper_short": "Izviekova et al. (2026, manuscript)",
+  "paper_url": "",
+  "status": "Manuscript",
+  "static_chart": "finding_charts/ic1495_finding_chart.png",
+  "multiband": false,
+  "star_coordinates_available": false,
+  "stars": [
+    {
+      "id": 1,
+      "ra": null,
+      "dec": null,
+      "R": 13.994,
+      "V": 14.544,
+      "eR": null,
+      "eV": null,
+      "catalog": "IAC80 working field calibration"
+    },
+    {
+      "id": 2,
+      "ra": null,
+      "dec": null,
+      "R": 15.374,
+      "V": 15.816,
+      "eR": null,
+      "eV": null,
+      "catalog": "IAC80 working field calibration"
+    },
+    {
+      "id": 3,
+      "ra": null,
+      "dec": null,
+      "R": 13.489,
+      "V": 13.876,
+      "eR": null,
+      "eV": null,
+      "catalog": "IAC80 working field calibration"
+    }
+  ],
+  "nights": [
+    {
+      "night": "2025-10-13",
+      "exp": "250 s (R)",
+      "duration": "—",
+      "frames": "26 acquired; 24 in fiducial 5-px IDV test"
+    },
+    {
+      "night": "2025-10-14",
+      "exp": "300 s (V)",
+      "duration": "—",
+      "frames": "35 acquired; 33 in fiducial 5-px IDV test"
+    }
+  ],
+  "photometry_catalog": "IAC80 working field calibration",
+  "photometry_system_note": "The R and V magnitudes listed here are the working comparison-star values used for the IC 1495 IAC80 reductions. Catalogue-coordinate provenance and magnitude uncertainties will be added when the original comparison-star table is imported.",
+  "extra_note": "This field is newly added. The supplied static chart already identifies stars 1–3 and lists the adopted V magnitudes."
+}

@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>IC 1495 finding chart & comparison stars | AGN Reference Fields</title>
-  <meta name="description" content="IC 1495 (IC 5327, 2MIG 3166) finding chart and three-star comparison sequence for IAC80/CAMELOT2 R- and V-band differential photometry, with observing details and machine-readable R/V values.">
+  <meta name="description" content="IC 1495 (IC 5327, 2MIG 3166) finding chart and three-star comparison sequence for IAC80/CAMELOT2 R- and V-band differential photometry, with J2000 positions, APASS DR9 photometry and Lupton R estimates.">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="IC 1495, IC 5327, 2MIG 3166, finding chart, comparison stars, reference stars, AGN photometry, IAC80, CAMELOT2">
+  <meta name="keywords" content="IC 1495, IC 5327, 2MIG 3166, finding chart, comparison stars, reference stars, AGN photometry, APASS DR9, Lupton transformation, IAC80, CAMELOT2">
   <link rel="canonical" href="https://izviekova-blip.github.io/agn-reference-fields/ic1495.html">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="IC 1495 finding chart & comparison stars">
-  <meta property="og:description" content="IC 1495 finding chart and three-star R/V comparison sequence used for IAC80/CAMELOT2 differential photometry.">
+  <meta property="og:description" content="IC 1495 finding chart and three-star APASS/Lupton comparison sequence used for IAC80/CAMELOT2 differential photometry.">
   <meta property="og:url" content="https://izviekova-blip.github.io/agn-reference-fields/ic1495.html">
 
   <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
@@ -23,11 +23,11 @@
     "@context": "https://schema.org",
     "@type": "Dataset",
     "name": "IC 1495 reference field",
-    "description": "IC 1495 finding chart and three-star R/V comparison sequence used for IAC80/CAMELOT2 differential photometry.",
+    "description": "IC 1495 finding chart and three-star comparison sequence with APASS DR9 photometry and Lupton-derived R estimates for IAC80/CAMELOT2 differential photometry.",
     "url": "https://izviekova-blip.github.io/agn-reference-fields/ic1495.html",
     "creator": {"@type": "Person", "name": "I. O. Izviekova"},
     "isPartOf": {"@type": "Dataset", "name": "AGN Reference Fields", "url": "https://izviekova-blip.github.io/agn-reference-fields/"},
-    "keywords": ["IC 1495", "IC 5327", "2MIG 3166", "AGN", "finding chart", "comparison stars", "differential photometry", "IAC80", "CAMELOT2"],
+    "keywords": ["IC 1495", "IC 5327", "2MIG 3166", "AGN", "finding chart", "comparison stars", "APASS DR9", "Lupton transformation", "differential photometry", "IAC80", "CAMELOT2"],
     "measurementTechnique": "Differential aperture photometry",
     "spatialCoverage": {"@type": "Place", "geo": {"@type": "GeoCoordinates", "latitude": -13.48544444, "longitude": 352.698875}},
     "distribution": [
@@ -69,7 +69,7 @@
       <div class="chart-panel">
         <div class="aladin" id="field-aladin"></div>
         <div class="chart-help">
-          Interactive DSS2 view centred on the IC 1495 nucleus. The green AGN marker uses the adopted J2000 target position. The numbered comparison stars are identified in the static IAC80 finding chart below.
+          Interactive DSS2 view. The AGN is labelled “AGN”; comparison stars are labelled 1, 2 and 3 to match the table and the static IAC80 finding chart below.
         </div>
       </div>
 
@@ -86,13 +86,18 @@
         </p>
 
         <div class="note">
-          <strong>Reference-star use.</strong>
-          Three numbered field stars were used for differential photometry. The working values adopted in the reductions are R = 13.994, 15.374, 13.489 and V = 14.544, 15.816, 13.876 for stars 1–3, respectively.
+          <strong>Reference-star photometry.</strong>
+          The three numbered comparison stars are matched to APASS DR9. The V magnitudes are used directly from APASS. The R magnitudes are estimates transformed from APASS Sloan r′ and i′ using the Lupton relation.
         </div>
 
         <div class="note">
-          <strong>Coordinate table.</strong>
-          The supplied finding chart identifies the same three comparison stars used in the IAC80 reductions. Their catalogue J2000 coordinates and catalogue uncertainties will be added to the machine-readable table once the original comparison-star catalogue file is available to the repository workflow.
+          <strong>Transformation check.</strong>
+          V transformed independently from APASS g′ and r′ differs from the direct APASS V value by only 0.029, 0.028 and 0.038 mag for stars 1–3, respectively.
+        </div>
+
+        <div class="note">
+          <strong>Uncertainty convention.</strong>
+          APASS catalogue entries reported with zero formal uncertainty are retained as raw zeros in the machine-readable data and displayed here as unavailable uncertainties.
         </div>
       </div>
     </div>
@@ -100,7 +105,7 @@
     <div class="subsection static-chart-section">
       <h3>Static finding chart</h3>
       <p class="footer-note">
-        The AGN is marked by the green cross. Comparison stars are marked by red circles and numbered 1–3. The chart retains the adopted V magnitudes in the lower-right corner.
+        The AGN is marked by the green cross. Comparison stars are marked by red circles and numbered 1–3. The chart retains the adopted APASS V magnitudes in the lower-right corner.
       </p>
       <a href="finding_charts/ic1495_finding_chart.jpg" target="_blank" rel="noopener">
         <img
@@ -112,26 +117,45 @@
     </div>
 
     <div class="star-table-wrap">
-      <h3>Comparison-star sequence — working R/V calibration</h3>
+      <h3>Comparison-star sequence — APASS DR9 + Lupton transformations</h3>
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>RA (deg)</th>
             <th>Dec (deg)</th>
-            <th>R</th>
-            <th>V</th>
-            <th>Source</th>
+            <th>V ± σV<br><small>APASS · Vega</small></th>
+            <th>B−V ± σ<br><small>APASS</small></th>
+            <th>g′ ± σg′<br><small>APASS · AB</small></th>
+            <th>r′ ± σr′<br><small>APASS · AB</small></th>
+            <th>i′ ± σi′<br><small>APASS · AB</small></th>
+            <th>V<sub>Lupton</sub> ± σ<br><small>g′−r′</small></th>
+            <th>R<sub>est</sub> ± σ<br><small>Lupton r′−i′</small></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>1</strong></td><td>—</td><td>—</td><td>13.994</td><td><strong>14.544</strong></td><td>IAC80 working field calibration</td></tr>
-          <tr><td><strong>2</strong></td><td>—</td><td>—</td><td>15.374</td><td><strong>15.816</strong></td><td>IAC80 working field calibration</td></tr>
-          <tr><td><strong>3</strong></td><td>—</td><td>—</td><td>13.489</td><td><strong>13.876</strong></td><td>IAC80 working field calibration</td></tr>
+          <tr>
+            <td><strong>1</strong></td><td class="coord">352.644555</td><td class="coord">−13.503099</td>
+            <td><strong>14.544 ± 0.037</strong></td><td>1.061 ± 0.110</td>
+            <td>15.081 ± 0.051</td><td>14.210 ± 0.043</td><td>13.965 ± 0.082</td>
+            <td>14.573 ± 0.033</td><td>13.994 ± 0.039</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td><td class="coord">352.739712</td><td class="coord">−13.531192</td>
+            <td><strong>15.816 ± —</strong></td><td>0.921 ± —</td>
+            <td>16.266 ± 0.068</td><td>15.543 ± 0.034</td><td>15.459 ± —</td>
+            <td>15.844 ± 0.035</td><td>15.374 ± 0.025</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td><td class="coord">352.707451</td><td class="coord">−13.544119</td>
+            <td><strong>13.876 ± 0.016</strong></td><td>0.815 ± 0.092</td>
+            <td>14.247 ± 0.067</td><td>13.677 ± 0.014</td><td>13.528 ± 0.066</td>
+            <td>13.914 ± 0.030</td><td>13.489 ± 0.023</td>
+          </tr>
         </tbody>
       </table>
       <p class="footer-note" style="margin:10px 0 0">
-        The R/V values are the working comparison-star magnitudes used in the IC 1495 reductions. Catalogue positions and uncertainties will be added from the original comparison-star catalogue table.
+        V, B−V, g′, r′ and i′ are APASS DR9 catalogue quantities. R<sub>est</sub> is a transformed estimate from Sloan r′ and i′ and is not a direct APASS R measurement. “—” denotes a catalogue-reported zero or otherwise unavailable uncertainty.
       </p>
     </div>
 
@@ -160,7 +184,7 @@
   <section>
     <h2 class="section-title">Search terms and reuse</h2>
     <p class="footer-note">
-      This page provides an IC 1495 / IC 5327 finding chart, the numbered local comparison sequence used in the IAC80/CAMELOT2 reductions, working R/V reference magnitudes, target J2000 coordinates, and observing information.
+      This page provides an IC 1495 / IC 5327 finding chart, the numbered local comparison sequence used in the IAC80/CAMELOT2 reductions, APASS DR9 J2000 positions and photometry, Lupton-derived R estimates, and observing information.
     </p>
   </section>
 </main>
@@ -184,6 +208,7 @@ window.addEventListener('DOMContentLoaded', () => {
     showLayersControl: true,
     showSimbadPointerControl: true
   });
+
   const targetCat = A.catalog({
     name: 'IC 1495 nucleus',
     sourceSize: 18,
@@ -202,6 +227,24 @@ window.addEventListener('DOMContentLoaded', () => {
     coordinates: '352.698875, -13.485444',
     description: 'IC 1495 nucleus (J2000)'
   })]);
+
+  const refCat = A.catalog({
+    name: 'Comparison stars',
+    sourceSize: 18,
+    color: '#ff5a5f',
+    shape: 'square',
+    labelColumn: 'label',
+    displayLabel: true,
+    labelColor: '#FFE66D',
+    labelFont: 'bold 17px Arial',
+    onClick: 'showPopup'
+  });
+  aladin.addCatalog(refCat);
+  refCat.addSources([
+    A.source(352.644555, -13.503099, {label:'1', star_id:'Reference star 1', V_mag:'14.544 ± 0.037', R_est:'13.994 ± 0.039', description:'IC 1495 comparison star 1'}),
+    A.source(352.739712, -13.531192, {label:'2', star_id:'Reference star 2', V_mag:'15.816 ± —', R_est:'15.374 ± 0.025', description:'IC 1495 comparison star 2'}),
+    A.source(352.707451, -13.544119, {label:'3', star_id:'Reference star 3', V_mag:'13.876 ± 0.016', R_est:'13.489 ± 0.023', description:'IC 1495 comparison star 3'})
+  ]);
 });
 </script>
 </body>

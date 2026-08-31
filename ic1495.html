@@ -15,7 +15,6 @@
   <meta property="og:description" content="IC 1495 finding chart and three-star APASS/Lupton comparison sequence used for IAC80/CAMELOT2 differential photometry.">
   <meta property="og:url" content="https://izviekova-blip.github.io/agn-reference-fields/ic1495.html">
 
-  <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
   <link rel="stylesheet" href="assets/style.css">
 
   <script type="application/ld+json">
@@ -68,7 +67,7 @@
     <div class="field-grid">
       <div class="chart-panel">
         <div class="aladin" id="field-aladin"></div>
-        <div class="chart-help">
+        <div class="chart-help" id="chart-help">
           Interactive DSS2 view. The AGN is labelled “AGN”; comparison stars are labelled 1, 2 and 3 to match the table and the static IAC80 finding chart below.
         </div>
       </div>
@@ -196,8 +195,7 @@
 </footer>
 
 <script>
-window.addEventListener('DOMContentLoaded', () => {
-  if (!window.A) return;
+A.init.then(() => {
   const aladin = A.aladin('#field-aladin', {
     survey: 'P/DSS2/color',
     fov: 0.2,
@@ -221,12 +219,14 @@ window.addEventListener('DOMContentLoaded', () => {
     onClick: 'showPopup'
   });
   aladin.addCatalog(targetCat);
-  targetCat.addSources([A.source(352.698875, -13.48544444, {
-    label: 'AGN',
-    name: 'IC 1495',
-    coordinates: '352.698875, -13.485444',
-    description: 'IC 1495 nucleus (J2000)'
-  })]);
+  targetCat.addSources([
+    A.source(352.698875, -13.48544444, {
+      label: 'AGN',
+      name: 'IC 1495',
+      coordinates: '352.698875, -13.485444',
+      description: 'IC 1495 nucleus (J2000)'
+    })
+  ]);
 
   const refCat = A.catalog({
     name: 'Comparison stars',
@@ -245,6 +245,10 @@ window.addEventListener('DOMContentLoaded', () => {
     A.source(352.739712, -13.531192, {label:'2', star_id:'Reference star 2', V_mag:'15.816 ± —', R_est:'15.374 ± 0.025', description:'IC 1495 comparison star 2'}),
     A.source(352.707451, -13.544119, {label:'3', star_id:'Reference star 3', V_mag:'13.876 ± 0.016', R_est:'13.489 ± 0.023', description:'IC 1495 comparison star 3'})
   ]);
+}).catch(err => {
+  console.error('Aladin Lite initialization failed:', err);
+  const help = document.getElementById('chart-help');
+  if (help) help.textContent = 'Interactive chart could not load. The static finding chart and comparison-star table remain available below.';
 });
 </script>
 </body>

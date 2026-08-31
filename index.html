@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AGN Reference Fields | Finding charts & comparison stars</title>
-  <meta name="description" content="Finding charts and comparison-star sequences for Mrk 42, IC 5287, Mrk 845 and IC 1495, with IAC80/CAMELOT2 observing details and machine-readable reference data.">
+  <meta name="description" content="Finding charts and comparison-star sequences for Mrk 42, IC 5287, Mrk 845, IC 1495 and UGC 12282, with IAC80/CAMELOT2 observing resources and machine-readable reference data.">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="AGN finding chart, AGN comparison stars, AGN reference stars, Mrk 42 finding chart, IC 5287 reference stars, Mrk 845 comparison stars, IC 1495 comparison stars, IAC80, CAMELOT2, APASS DR9">
+  <meta name="keywords" content="AGN finding chart, AGN comparison stars, AGN reference stars, Mrk 42 finding chart, IC 5287 reference stars, Mrk 845 comparison stars, IC 1495 comparison stars, UGC 12282 comparison stars, IAC80, CAMELOT2, APASS DR9">
   <link rel="canonical" href="https://izviekova-blip.github.io/agn-reference-fields/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="AGN Reference Fields">
@@ -14,7 +14,7 @@
   <meta property="og:url" content="https://izviekova-blip.github.io/agn-reference-fields/">
   <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
   <link rel="stylesheet" href="assets/style.css">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "AGN Reference Fields", "description": "Finding charts and comparison-star sequences for optical monitoring of active galactic nuclei.", "url": "https://izviekova-blip.github.io/agn-reference-fields/", "keywords": ["AGN", "finding charts", "comparison stars", "reference stars", "differential photometry", "IAC80", "CAMELOT2"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/reference-stars.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/fields.json"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/ic1495-reference-stars.csv"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "AGN Reference Fields", "description": "Finding charts and comparison-star sequences for optical monitoring of active galactic nuclei.", "url": "https://izviekova-blip.github.io/agn-reference-fields/", "keywords": ["AGN", "finding charts", "comparison stars", "reference stars", "differential photometry", "IAC80", "CAMELOT2"], "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/reference-stars.csv"}, {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/fields.json"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/ic1495-reference-stars.csv"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://izviekova-blip.github.io/agn-reference-fields/data/ugc12282-reference-stars.csv"}]}</script>
   <script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
 </head>
 <body>
@@ -32,8 +32,8 @@
 
 <main>
   <div class="summary" aria-label="Resource summary">
-    <div class="metric"><strong id="nfields">4</strong><span>AGN fields</span></div>
-    <div class="metric"><strong id="nstars">14</strong><span>comparison stars</span></div>
+    <div class="metric"><strong id="nfields">5</strong><span>AGN fields</span></div>
+    <div class="metric"><strong id="nstars">17</strong><span>comparison stars</span></div>
     <div class="metric"><strong>IAC80</strong><span>CAMELOT2 optical monitoring</span></div>
   </div>
 
@@ -60,6 +60,11 @@
       <span>IC 5327 · MCG−02−59−024 · 2MIG 3166</span>
       <p style="margin:.55rem 0 0">Finding chart + 3 comparison stars · IAC80 / CAMELOT2 · R and V bands</p>
     </article>
+    <article class="metric">
+      <strong><a href="ugc12282.html">UGC 12282</a></strong>
+      <span>PGC 70163 · 2MIG 3110</span>
+      <p style="margin:.55rem 0 0">Finding chart + 3 comparison stars · V-band reference sequence</p>
+    </article>
   </div>
 
   <h2 class="section-title" id="fields">Interactive reference fields</h2>
@@ -68,16 +73,18 @@
     <a class="small-button" href="data/reference-stars.csv" download>APASS CSV</a>
     <a class="small-button" href="data/fields.json" download>Core JSON</a>
     <a class="small-button" href="data/ic1495-reference-stars.csv" download>IC 1495 CSV</a>
+    <a class="small-button" href="data/ugc12282-reference-stars.csv" download>UGC 12282 CSV</a>
   </div>
   <div id="cards"><p>Loading reference fields…</p></div>
 
   <h2 class="section-title">What this resource contains</h2>
   <p class="footer-note">
-    AGN finding charts, local comparison-star sequences, IAC80/CAMELOT2 observing information,
+    AGN finding charts, local comparison-star sequences, IAC80/CAMELOT2 observing information where available,
     and machine-readable reference tables. Mrk 42, IC 5287 and Mrk 845 include APASS DR9 multiband
     catalogue photometry with J2000 comparison-star coordinates. IC 1495 includes APASS DR9 J2000
     positions and V/g′/r′/i′ photometry for three comparison stars, together with Lupton-derived
-    R estimates used for the R-band reduction and the original numbered static finding chart.
+    R estimates used for the R-band reduction. UGC 12282 includes the supplied J2000 positions,
+    V magnitudes and B−V colours for its three numbered comparison stars and the original finding chart.
   </p>
 </main>
 
@@ -88,5 +95,6 @@
   </div>
 </footer>
 <script src="assets/app.js"></script>
+<script src="assets/ugc12282-extension.js"></script>
 </body>
 </html>

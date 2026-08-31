@@ -1,0 +1,68 @@
+{
+  "slug": "ugc12282",
+  "name": "UGC 12282",
+  "aliases": "PGC 70163 · 2MIG 3110",
+  "ra_sex": "22:58:55.28",
+  "dec_sex": "+40:55:55.9",
+  "ra_deg": 344.730333,
+  "dec_deg": 40.932194,
+  "instrument": "IAC80 / CAMELOT2",
+  "filter": "V",
+  "aperture": "not supplied",
+  "field_fov_deg": 0.2,
+  "observing_summary": "V-band comparison-star field for UGC 12282. The supplied standard-star table does not include the observing date, exposure time, frame count or aperture.",
+  "reference_note": "Three numbered comparison stars are identified in the supplied finding chart and matched to the J2000 positions in the supplied table.",
+  "validation_note": "The supplied table provides J2000 coordinates, V magnitudes and B−V colours for the three comparison stars. The zero formal V uncertainty listed for star 1 is retained as a raw value and displayed as unavailable.",
+  "paper_title": "UGC 12282 optical monitoring",
+  "paper_short": "Izviekova et al. (working dataset)",
+  "paper_url": "",
+  "status": "Working dataset",
+  "photometry_mode": "v_bv",
+  "multiband": false,
+  "static_chart": "finding_charts/ugc12282_finding_chart.jpg",
+  "stars": [
+    {
+      "id": 1,
+      "ra": 344.811083,
+      "dec": 40.902881,
+      "V": 15.759,
+      "eV": null,
+      "eV_raw": 0.0,
+      "BV": 1.066,
+      "eBV": 0.114,
+      "catalog": "Supplied standard-star table"
+    },
+    {
+      "id": 2,
+      "ra": 344.812843,
+      "dec": 40.933759,
+      "V": 14.721,
+      "eV": 0.036,
+      "eV_raw": 0.036,
+      "BV": 0.777,
+      "eBV": 0.085,
+      "catalog": "Supplied standard-star table"
+    },
+    {
+      "id": 3,
+      "ra": 344.824663,
+      "dec": 40.937892,
+      "V": 14.658,
+      "eV": 0.047,
+      "eV_raw": 0.047,
+      "BV": 0.664,
+      "eBV": 0.124,
+      "catalog": "Supplied standard-star table"
+    }
+  ],
+  "nights": [
+    {
+      "night": "Not supplied",
+      "exp": "—",
+      "duration": "—",
+      "frames": "—"
+    }
+  ],
+  "photometry_catalog": "Supplied standard-star table",
+  "photometry_system_note": "The supplied table reports V and B−V values. A catalogue-reported zero V uncertainty is retained as a raw value and is not interpreted as a physically zero uncertainty."
+}

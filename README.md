@@ -10,21 +10,23 @@ Public site: https://izviekova-blip.github.io/agn-reference-fields/
 - [IC 5287](https://izviekova-blip.github.io/agn-reference-fields/ic5287.html)
 - [Mrk 845](https://izviekova-blip.github.io/agn-reference-fields/mrk845.html)
 - [IC 1495](https://izviekova-blip.github.io/agn-reference-fields/ic1495.html)
+- [UGC 12282](https://izviekova-blip.github.io/agn-reference-fields/ugc12282.html)
 
 ## Static finding charts
 
-Static finding charts are provided for all four fields:
+Static finding charts are provided for all five fields:
 
 - `finding_charts/mrk42_finding_chart_clean.png`
 - `finding_charts/ic5287_finding_chart_clean.png`
 - `finding_charts/mrk845_finding_chart_clean.png`
 - `finding_charts/ic1495_finding_chart.jpg`
+- `finding_charts/ugc12282_finding_chart.jpg`
 
-The AGN is marked by a green cross and comparison stars are numbered consistently with the field tables. The first three charts are clean publication/reuse versions with photometry kept in the machine-readable tables. The IC 1495 chart is the supplied working V-band chart and retains the three adopted V magnitudes on the image.
+The AGN is marked by a green cross and comparison stars are numbered consistently with the field tables. The Mrk 42, IC 5287 and Mrk 845 charts are clean publication/reuse versions with photometry kept in the machine-readable tables. The IC 1495 and UGC 12282 charts preserve the supplied working annotations and adopted V magnitudes.
 
 ## Reference-star photometry
 
-Reference-star catalogue photometry is based on **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
+Reference-star catalogue photometry for Mrk 42, IC 5287, Mrk 845 and IC 1495 is based on **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
 
 - VizieR catalogue: https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=II%2F336%2Fapass9
 - AAVSO APASS project: https://www.aavso.org/apass
@@ -40,7 +42,15 @@ For IC 1495, the supplied standard-star tables provide J2000 coordinates and APA
 
 The independently transformed Lupton V values from g′−r′ differ from the direct APASS V values by 0.029, 0.028 and 0.038 mag for stars 1–3, respectively. The R values are transformed estimates and are not direct APASS R measurements.
 
-Catalogue-reported zero uncertainties are retained in the machine-readable data as raw values but are shown as unavailable in the public tables rather than interpreted as physically zero.
+For UGC 12282, the supplied standard-star table contains three comparison stars with J2000 positions, V magnitudes and B−V colours:
+
+- star 1: RA = 344.811083°, Dec = +40.902881°, V = 15.759, B−V = 1.066 ± 0.114
+- star 2: RA = 344.812843°, Dec = +40.933759°, V = 14.721 ± 0.036, B−V = 0.777 ± 0.085
+- star 3: RA = 344.824663°, Dec = +40.937892°, V = 14.658 ± 0.047, B−V = 0.664 ± 0.124
+
+The supplied UGC 12282 table does not identify the catalogue source or include observing date, exposure time, frame count or aperture, so those fields are not inferred here.
+
+Catalogue-reported zero uncertainties are retained in the machine-readable data as raw values but are shown as unavailable in the public tables instead of being interpreted as physically zero.
 
 ## Machine-readable data
 
@@ -48,6 +58,8 @@ Catalogue-reported zero uncertainties are retained in the machine-readable data 
 - `data/fields.json` — core field metadata for Mrk 42, IC 5287 and Mrk 845.
 - `data/ic1495.json` — IC 1495 metadata, observing log, J2000 comparison-star positions, APASS photometry and Lupton transformations.
 - `data/ic1495-reference-stars.csv` — full IC 1495 comparison-star table including APASS values, transformed V consistency check and Lupton R estimates.
+- `data/ugc12282.json` — UGC 12282 target metadata and the supplied three-star V/B−V sequence.
+- `data/ugc12282-reference-stars.csv` — machine-readable UGC 12282 comparison-star positions, V magnitudes, B−V colours and raw uncertainty values.
 
 ## IC 1495 observing sequence
 
@@ -59,7 +71,7 @@ IC 1495 was observed with IAC80/CAMELOT2 on two consecutive nights. The 2025 Oct
 
 The workflow `.github/workflows/update-apass.yml` can be run manually from the GitHub **Actions** tab. It includes safeguards against a wrong cross-match: the nearest catalogue source must be within 3 arcsec and its APASS V magnitude must agree with the existing published/site V magnitude to within 0.03 mag.
 
-IC 1495 currently uses its separately supplied APASS/Lupton table and is not modified by this automatic refresh workflow.
+IC 1495 currently uses its separately supplied APASS/Lupton table and is not modified by this automatic refresh workflow. UGC 12282 likewise uses the separately supplied V/B−V table and is not modified by the automatic APASS refresh.
 
 ## Search-engine support
 
@@ -70,6 +82,6 @@ https://izviekova-blip.github.io/agn-reference-fields/sitemap.xml
 
 ## Data provenance
 
-The finding-chart numbering and comparison-star selections follow the corresponding observing analyses/manuscripts. APASS DR9 supplies the catalogue photometry. For IC 1495, the R estimates and the independent transformed-V check are calculated from the supplied APASS Sloan photometry using the Lupton transformations. The cited papers/manuscripts remain the authoritative source for reduction, quality-control tests and variability classifications.
+The finding-chart numbering and comparison-star selections follow the corresponding observing analyses/manuscripts or supplied field tables. APASS DR9 supplies the catalogue photometry where explicitly identified. For IC 1495, the R estimates and the independent transformed-V check are calculated from the supplied APASS Sloan photometry using the Lupton transformations. For UGC 12282, the public values are reproduced directly from the supplied standard-star table; no missing observing metadata are inferred. The cited papers/manuscripts remain the authoritative source for reduction, quality-control tests and variability classifications.
 
 If VizieR catalogue access is used in downstream work, please follow the acknowledgement requested by CDS/VizieR.

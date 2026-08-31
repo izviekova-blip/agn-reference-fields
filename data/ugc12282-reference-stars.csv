@@ -1,0 +1,4 @@
+star_id,ra_j2000_deg,dec_j2000_deg,V_mag,e_V_mag,e_V_mag_raw,B_minus_V,e_B_minus_V,source
+1,344.811083,40.902881,15.759,,0.000,1.066,0.114,Supplied standard-star table
+2,344.812843,40.933759,14.721,0.036,0.036,0.777,0.085,Supplied standard-star table
+3,344.824663,40.937892,14.658,0.047,0.047,0.664,0.124,Supplied standard-star table

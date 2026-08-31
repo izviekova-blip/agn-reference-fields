@@ -2,7 +2,7 @@
 
 ## Catalogue photometry: APASS DR9
 
-Reference-star photometry in this resource is drawn from the **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`.
+Reference-star photometry in this resource is drawn from the **AAVSO Photometric All-Sky Survey (APASS) DR9**, VizieR catalogue `II/336/apass9`, for fields where APASS is explicitly identified in the source table.
 
 - VizieR: https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=II%2F336%2Fapass9
 - AAVSO APASS: https://www.aavso.org/apass
@@ -45,3 +45,15 @@ Direct APASS V magnitudes are 14.544 ± 0.037, 15.816 and 13.876 ± 0.016 for st
 As an internal consistency check, V transformed independently from APASS g′ and r′ is 14.573 ± 0.033, 15.844 ± 0.035 and 13.914 ± 0.030 mag, differing from the direct APASS V values by 0.029, 0.028 and 0.038 mag, respectively.
 
 Catalogue-reported zero formal uncertainties for star 2 are retained as raw zero values in the machine-readable table and displayed publicly as unavailable uncertainties.
+
+## UGC 12282
+
+UGC 12282 is 2MIG 3110. The target position used for the interactive field is J2000 RA = 22:58:55.28, Dec = +40:55:55.9, following the published 2MIG isolated-AGN sample.
+
+The comparison-star sequence comes from the supplied `мапа стандартів UGC12282(1).csv` table and accompanying annotated finding chart. The source table contains:
+
+- star 1: RA = 344.811083°, Dec = +40.902881°, V = 15.759, eV(raw) = 0.000, B−V = 1.066 ± 0.114
+- star 2: RA = 344.812843°, Dec = +40.933759°, V = 14.721 ± 0.036, B−V = 0.777 ± 0.085
+- star 3: RA = 344.824663°, Dec = +40.937892°, V = 14.658 ± 0.047, B−V = 0.664 ± 0.124
+
+The table does not state the catalogue source, observing date, exposure time, number of frames or adopted aperture. Those quantities are therefore left unspecified. The zero V uncertainty for star 1 is retained as a raw catalogue value in the machine-readable data and displayed publicly as unavailable rather than interpreted as physically zero.

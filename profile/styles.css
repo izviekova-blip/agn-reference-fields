@@ -89,3 +89,6 @@ footer{max-width:var(--max);margin:auto;padding:26px 24px 48px;color:#71849b;fon
   .pub-row{grid-template-columns:1fr;gap:7px}
   .pub-year{padding-top:0}
 }
+
+.cards.four{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.cards.four{grid-template-columns:1fr}}

@@ -92,3 +92,9 @@ footer{max-width:var(--max);margin:auto;padding:26px 24px 48px;color:#71849b;fon
 
 .cards.four{grid-template-columns:repeat(2,1fr)}
 @media(max-width:900px){.cards.four{grid-template-columns:1fr}}
+
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+.skill-group{padding:22px;border:1px solid var(--line);background:#0d1928aa;border-radius:18px}
+.skill-title{font:600 13px Space Grotesk,Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#d8e8fa;margin-bottom:14px}
+.skill-group .toolkit{margin-top:0}
+@media(max-width:900px){.skills-grid{grid-template-columns:1fr}}

@@ -1,6 +1,8 @@
 # AGN Reference Fields
 
-Finding charts and comparison-star sequences for optical monitoring of active galactic nuclei.
+Reference Field Lab provides an English/Ukrainian interactive finding-chart generator, alongside the AGN Reference Fields collection of comparison-star sequences.
+
+Enter coordinates and a field of view, review the screened candidates, select your stars, and export a PNG or SVG finding chart. See [Reference Field Lab documentation](REFERENCE-FIELD-LAB.md) for hosting, data maintenance and checks.
 
 Public site: https://izviekova-blip.github.io/agn-reference-fields/
 

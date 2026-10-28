@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/</loc>
-    <priority>1.0</priority>
+    <loc>https://izviekova-blip.github.io/agn-reference-fields/uk/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://izviekova-blip.github.io/agn-reference-fields/uk/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://izviekova-blip.github.io/agn-reference-fields/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://izviekova-blip.github.io/agn-reference-fields/en/" />
   </url>
   <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/mrk42.html</loc>
-    <priority>0.9</priority>
+    <loc>https://izviekova-blip.github.io/agn-reference-fields/en/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://izviekova-blip.github.io/agn-reference-fields/uk/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://izviekova-blip.github.io/agn-reference-fields/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://izviekova-blip.github.io/agn-reference-fields/en/" />
   </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/ic5287.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/mrk845.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/ic1495.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/ugc12282.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/data/reference-stars.csv</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/data/ic1495-reference-stars.csv</loc>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://izviekova-blip.github.io/agn-reference-fields/data/ugc12282-reference-stars.csv</loc>
-    <priority>0.5</priority>
-  </url>
+  <url><loc>https://izviekova-blip.github.io/agn-reference-fields/mrk42.html</loc><lastmod>2026-10-29</lastmod></url>
+  <url><loc>https://izviekova-blip.github.io/agn-reference-fields/ic5287.html</loc><lastmod>2026-10-29</lastmod></url>
+  <url><loc>https://izviekova-blip.github.io/agn-reference-fields/mrk845.html</loc><lastmod>2026-10-29</lastmod></url>
+  <url><loc>https://izviekova-blip.github.io/agn-reference-fields/ic1495.html</loc><lastmod>2026-10-29</lastmod></url>
+  <url><loc>https://izviekova-blip.github.io/agn-reference-fields/ugc12282.html</loc><lastmod>2026-10-29</lastmod></url>
 </urlset>

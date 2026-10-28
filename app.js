@@ -131,9 +131,16 @@ $('form').onsubmit=async e=>{
   const responses=await Promise.allSettled(jobs.map(j=>query(j.table,j.cols,cfg)));
   const failed=responses.flatMap((r,i)=>r.status==='rejected'?[{catalog:jobs[i].catalog,error:r.reason}]:[]);
   if(failed.length){
-   const connection=failed.some(f=>f.error.name==='CatalogueConnectionError');
-   const explanation=connection?localText('Не вдалося отримати всі дані від серверів VizieR, зокрема резервних. Це збій доступу до каталогів, а не відсутність придатних зір. Спробуйте повторити запит пізніше. ','Could not retrieve all data from the VizieR servers, including the mirrors. This is a catalogue connection failure, not an absence of suitable stars. Please try again later. '):'';
-   throw Error(explanation+tr('Перевірку не завершено; нові кандидати не призначені. Недоступно: ')+failed.map(f=>f.catalog+(f.error.name==='CatalogueConnectionError'?'':': '+f.error.message)).join(' | '));
+   const connectionOnly=failed.every(f=>f.error.name==='CatalogueConnectionError');
+   if(connectionOnly){
+    console.warn('Catalogue request diagnostics',failed);
+    const serverError=failed.some(f=>f.error.attempts?.some(a=>/^HTTP 5\d\d$/.test(a.reason)));
+    const error=new Error(serverError
+     ?'Зовнішні сервери каталогів VizieR повернули серверну помилку. Це збій сервісу даних; побудову мапи стандартів тимчасово призупинено. Спробуйте пізніше. Готові поля залишаються доступними.'
+     :'Немає зв’язку із зовнішніми серверами каталогів VizieR. Сайт не може отримати дані для побудови мапи стандартів. Спробуйте пізніше. Готові поля залишаються доступними.');
+    error.userMessage=true;throw error;
+   }
+   throw Error(tr('Перевірку не завершено; нові кандидати не призначені. Недоступно: ')+failed.map(f=>f.catalog+(f.error.name==='CatalogueConnectionError'?'':': '+f.error.message)).join(' | '));
   }
   const results=responses.map((r,i)=>({...jobs[i],...r.value})),available=results.slice(0,photoJobs.length),ga=results[photoJobs.length],variableResults=results.slice(photoJobs.length+1);
   if(available.reduce((n,p)=>n+p.rows.length,0)>12000||ga.rows.length>12000)throw Error('Занадто щільне поле для браузерного зіставлення. Зменште поле зору.');
@@ -169,7 +176,7 @@ $('form').onsubmit=async e=>{
   render();
   loadSkyBackground(current);
   message(localText(`Відбір завершено: ${stages.accepted} кандидатів із ${stages.merged_sources} джерел. Відхилено: ${stages.excluded}.`,`Screening complete: ${stages.accepted} candidates from ${stages.merged_sources} sources. Excluded: ${stages.excluded}.`));
- }catch(err){message(tr('Запит не завершився. ')+err.message,true)}
+ }catch(err){message(err.userMessage?err.message:tr('Запит не завершився. ')+err.message,true)}
  finally{busy=false;$('generate').disabled=false;$('generate').textContent=tr('Знайти зорі та побудувати ↗')}
 };
 $('selectAll').onclick=()=>{if(current){current.stars.forEach(s=>s.selected=s.accepted!==false);refreshSelection()}};$('clearAll').onclick=()=>{if(current){current.stars.forEach(s=>s.selected=false);refreshSelection()}};

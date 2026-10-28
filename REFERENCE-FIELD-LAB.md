@@ -8,7 +8,7 @@ Site: https://izviekova-blip.github.io/agn-reference-fields/
 
 GitHub Pages serves the repository root on the main branch. No server, build step, API key or ChatGPT account is required. The browser queries public catalogue and sky-image services.
 
-The main application uses index.html, app.js, science.js, recommendations.js, viewport.js, i18n.js, style.css and fields.json. The original per-object pages, assets/, data/ and finding_charts/ remain available at their existing URLs.
+The main application uses index.html, app.js, catalogue-client.js, science.js, recommendations.js, viewport.js, i18n.js, style.css and fields.json. The original per-object pages, assets/, data/ and finding_charts/ remain available at their existing URLs.
 
 ## Curated fields
 
@@ -22,8 +22,14 @@ Select comparison stars in the table, enable the monochrome sky option, and save
 
 ## Checks
 
-Run node tests/science.test.cjs and node tests/brightness.test.cjs. Catalogue screening identifies candidates and does not establish long-term constancy. Validate comparisons on your own images and time series.
+Run node tests/science.test.cjs node tests/brightness.test.cjs and node tests/catalogue-client.test.cjs. Catalogue screening identifies candidates and does not establish long-term constancy. Validate comparisons on your own images and time series.
 
 ## Citation
 
 Finding charts were prepared with Reference Field Lab (Inna Izviekova). For curated sequences, cite AGN Reference Fields (https://doi.org/10.5281/zenodo.22036357), specifying the version used.
+
+## Catalogue connections
+
+The browser uses the official VizieR ASU service, with the CfA Harvard and NAOJ mirrors as fallbacks for network failures, timeouts and server errors. Each attempt has a 25-second timeout covering the response body. A working endpoint is preferred for subsequent queries in that page session. The exact successful query URL and access time are included in exported provenance. No proxy, cached substitute or relaxed scientific checks are used. All required catalogue checks must succeed before a new candidate list is committed.
+
+Endpoint documentation: https://vizier.cds.unistra.fr/doc/asu-summary.htx

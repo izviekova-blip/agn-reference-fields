@@ -77,7 +77,9 @@ function setForm(){for(let [k,v] of Object.entries({object:current.name,ra:curre
 function selectionAdvice(){
  $('selectionAdvice').innerHTML='<strong>'+localText('ПОРАДА','TIP')+'</strong><p>'+localText('Найкраще підійдуть зорі, найближчі за магнітудою до об’єкта в тій самій смузі й системі. Наприклад, для цілі 18 mag шукайте близькі за блиском зорі, а не 12 mag. Це рекомендація: пошук не обмежує магнітуди.','Prefer stars closest in magnitude to your target in the same band and system. For an 18 mag target, prefer similarly bright stars over 12 mag stars. This is guidance: the search does not restrict magnitudes.')+'</p><p>'+localText('Номер у таблиці відповідає номеру на мапі стандартів. Усі доступні вимірювання показані разом; «—» означає відсутню похибку, не нуль. Зніміть позначку біля зорі, щоб прибрати її з мапи стандартів.','Table numbers match the finding chart. All available measurements appear together; “—” means an unavailable uncertainty, not zero. Uncheck a star to remove it from the finding chart.')+'</p><details><summary>'+localText('Для диференціальної фотометрії: REF і CHECK','For differential photometry: REF and CHECK')+'</summary><p>'+localText('Після перевірки на кадрах призначте зорі порівняння REF та окрему контрольну CHECK через «Роль» біля номера. CHECK не включайте в ансамбль REF. Автоматичне відображення всіх кандидатів не означає рекомендацію використовувати їх усі в ансамблі.','After validating your images, assign comparison stars REF and a separate check star CHECK using “Role” beside the number. Keep CHECK outside the REF ensemble. Showing all candidates does not recommend using all of them in an ensemble.')+'</p></details>';
 }
+const requestCatalogue=CatalogueClient.createClient();
 function parseTSV(s,coordName,requiredColumns=[]){
+ if(/truncated|overflow/i.test(s))throw Error('Ліміт каталогу: зменште поле зору.');
  if(/QUERY_STATUS[^\n]*ERROR|#ERROR|#INFO[^\n]*Error=|<html/i.test(s))throw Error('Каталог повернув помилку.');
  const declared=[...s.matchAll(/^#Column\s+(\S+)/gm)].map(m=>m[1]);
  if(requiredColumns.some(c=>!declared.includes(c)))throw Error('Немає очікуваних колонок у відповіді каталогу.');
@@ -94,9 +96,19 @@ function parseTSV(s,coordName,requiredColumns=[]){
   if(!(Number.isFinite(ra)&&ra>=0&&ra<360&&Number.isFinite(dec)&&dec>=-90&&dec<=90))throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
   return row;
  });
- if(rows.length>=20000||/truncated|overflow/i.test(s))throw Error('Ліміт каталогу: зменште поле зору.');return rows;
+ if(rows.length>=20000)throw Error('Ліміт каталогу: зменште поле зору.');return rows;
 }
-async function query(cat,cols,c){let u='https://vizier.cds.unistra.fr/viz-bin/asu-tsv?'+new URLSearchParams({'-source':cat,'-c':`${c.ra} ${c.dec}`,'-c.rm':c.fov/Math.sqrt(2)+(c.isolation+c.match)/60+0.1,'-out.max':'20000','-out':cols.join(',')});let r=await fetch(u,{signal:AbortSignal.timeout(60000)});if(!r.ok)throw Error(cat+': HTTP '+r.status);let text=await r.text();return {rows:parseTSV(text,cols.find(c=>['RA_ICRS','RAJ2000','RAdeg'].includes(c)),cols),url:u,accessed_at:new Date().toISOString()}}
+async function query(cat,cols,c){
+ const params={'-source':cat,'-c':`${c.ra} ${c.dec}`,'-c.rm':c.fov/Math.sqrt(2)+(c.isolation+c.match)/60+0.1,'-out.max':'20000','-out':cols.join(',')};
+ let result;
+ try{result=await requestCatalogue(params)}catch(error){
+  if(error.name==='CatalogueConnectionError'){console.warn('VizieR connection failed',cat,error.attempts);throw error;}
+  throw error;
+ }
+ // A successful connection is not a successful scientific check: validate all
+ // requested columns, coordinates and truncation before accepting any rows.
+ return {rows:parseTSV(result.text,cols.find(c=>['RA_ICRS','RAJ2000','RAdeg'].includes(c)),cols),url:result.url,accessed_at:result.accessed_at};
+}
 const APASS_COLS=['RAJ2000','DEJ2000','B-V','e_B-V','nobs','u_e_Bmag','u_e_Vmag',"u_e_g'mag","u_e_r'mag","u_e_i'mag",'Bmag','e_Bmag','Vmag','e_Vmag',"g'mag","e_g'mag","r'mag","e_r'mag","i'mag","e_i'mag"];
 const PS1_COLS=['RAJ2000','DEJ2000','objID','f_objID','Qual','Epoch',...['g','r','i','z','y'].flatMap(b=>[b+'Flags','o_'+b+'mag',b+'magStd',b+'mag','e_'+b+'mag'])];
 const VARIABLE_CATALOGUES=[
@@ -117,8 +129,12 @@ $('form').onsubmit=async e=>{
   const gaiaJob={catalog:'Gaia DR3',table:'I/355/gaiadr3',cols:['Source','RA_ICRS','DE_ICRS','RUWE','VarFlag','Plx','e_Plx','pmRA','e_pmRA','pmDE','e_pmDE','Dup','IPDfmp']};
   const jobs=[...photoJobs,gaiaJob,...VARIABLE_CATALOGUES];
   const responses=await Promise.allSettled(jobs.map(j=>query(j.table,j.cols,cfg)));
-  const failed=responses.flatMap((r,i)=>r.status==='rejected'?[jobs[i].catalog+': '+r.reason.message]:[]);
-  if(failed.length)throw Error(tr('Перевірку не завершено; нові кандидати не призначені. Недоступно: ')+failed.join(' | '));
+  const failed=responses.flatMap((r,i)=>r.status==='rejected'?[{catalog:jobs[i].catalog,error:r.reason}]:[]);
+  if(failed.length){
+   const connection=failed.some(f=>f.error.name==='CatalogueConnectionError');
+   const explanation=connection?localText('Не вдалося отримати всі дані від серверів VizieR, зокрема резервних. Це збій доступу до каталогів, а не відсутність придатних зір. Спробуйте повторити запит пізніше. ','Could not retrieve all data from the VizieR servers, including the mirrors. This is a catalogue connection failure, not an absence of suitable stars. Please try again later. '):'';
+   throw Error(explanation+tr('Перевірку не завершено; нові кандидати не призначені. Недоступно: ')+failed.map(f=>f.catalog+(f.error.name==='CatalogueConnectionError'?'':': '+f.error.message)).join(' | '));
+  }
   const results=responses.map((r,i)=>({...jobs[i],...r.value})),available=results.slice(0,photoJobs.length),ga=results[photoJobs.length],variableResults=results.slice(photoJobs.length+1);
   if(available.reduce((n,p)=>n+p.rows.length,0)>12000||ga.rows.length>12000)throw Error('Занадто щільне поле для браузерного зіставлення. Зменште поле зору.');
   const g=ga.rows.map(t=>({...t,ra:num(t.RA_ICRS),dec:num(t.DE_ICRS)})).filter(t=>Number.isFinite(t.ra)&&Number.isFinite(t.dec));

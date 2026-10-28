@@ -1,10 +1,14 @@
-# AGN Reference Fields
+# Reference Field Lab · AGN Reference Fields
 
-Reference Field Lab provides an English/Ukrainian interactive finding-chart generator, alongside the AGN Reference Fields collection of comparison-star sequences.
+Reference Field Lab is a free English/Ukrainian astronomy comparison-star finder and finding-chart generator for differential photometry, alongside the AGN Reference Fields collection of curated comparison-star sequences.
 
-Enter coordinates and a field of view, review the screened candidates, select your stars, and export a PNG or SVG finding chart. See [Reference Field Lab documentation](REFERENCE-FIELD-LAB.md) for hosting, data maintenance and checks.
+Enter coordinates and a field of view, review candidates screened with APASS, Pan-STARRS1, Gaia and variable-star catalogues, select your stars, and export a publication-ready PNG or SVG finding chart. See [Reference Field Lab documentation](REFERENCE-FIELD-LAB.md) for hosting, data maintenance and checks.
 
-Public site: https://izviekova-blip.github.io/agn-reference-fields/
+## Open the tool
+
+- [Astronomy comparison-star finder and finding-chart generator — English](https://izviekova-blip.github.io/agn-reference-fields/en/)
+- [Мапа стандартів і пошук зір порівняння для фотометрії — Українська](https://izviekova-blip.github.io/agn-reference-fields/uk/)
+- [AGN Reference Fields on Zenodo — all versions DOI](https://doi.org/10.5281/zenodo.22036357)
 
 ## Included fields
 

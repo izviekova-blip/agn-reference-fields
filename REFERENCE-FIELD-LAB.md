@@ -33,3 +33,11 @@ Finding charts were prepared with Reference Field Lab (Inna Izviekova). For cura
 The browser uses the official VizieR ASU service, with the CfA Harvard and NAOJ mirrors as fallbacks for network failures, timeouts and server errors. Each attempt has a 25-second timeout covering the response body. A working endpoint is preferred for subsequent queries in that page session. The exact successful query URL and access time are included in exported provenance. No proxy, cached substitute or relaxed scientific checks are used. All required catalogue checks must succeed before a new candidate list is committed.
 
 Endpoint documentation: https://vizier.cds.unistra.fr/doc/asu-summary.htx
+
+## Sky background
+
+New and curated fields automatically request a 1400-pixel square DESI Legacy Surveys cutout directly from the Legacy Surveys viewer (layer ls-dr10: southern DR10 plus northern DR9). The TAN scale is derived from the same tangent-plane field width as the chart overlay; north is up and east is left. Empty images, unexpected dimensions and large blank patches are rejected. This conservative pixel check is not a formal footprint mask or a photometric quality test.
+
+If the image is unavailable or incomplete, retain an existing embedded sky image or request DSS2 through the two official CDS HiPS2FITS endpoints. A timeout is not reported as proof of missing survey coverage. The actual source, layer, successful URL, access time, pixel scale and failures are included in JSON provenance; the displayed source is also printed in PNG/SVG. Catalogue photometry and candidate screening are independent of the background. Legacy Surveys acknowledgements: https://www.legacysurvey.org/acknowledgment/
+
+Run node tests/sky-background.test.cjs to check projection scale, blank-image rejection and fallback behavior.

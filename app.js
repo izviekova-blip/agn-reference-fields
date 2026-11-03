@@ -88,9 +88,10 @@ function parseTSV(s,coordName,requiredColumns=[]){
  const idx=lines.findIndex(l=>{const names=l.split('\t').map(x=>x.trim());return names.includes(coordName)&&names.includes(decName)});
  // ASU-TSV mirrors do not consistently emit #Column metadata. The actual
  // tabular header is authoritative; an empty VizieR table may contain only comments.
- if(idx<0){if(!lines.length&&/#Table\s/.test(s))return [];throw Error('Немає очікуваних колонок у відповіді каталогу.')}
+ if(idx<0){if(!lines.length&&/#Table\s/.test(s))return [];console.warn('VizieR header not found',{coordName,requiredColumns,preview:lines.slice(0,4)});throw Error('Немає очікуваних колонок у відповіді каталогу.')}
  const cols=lines[idx].split('\t').map(x=>x.trim());
- if(!cols.includes(decName)||requiredColumns.some(c=>!cols.includes(c)))throw Error('Немає очікуваних колонок у відповіді каталогу.');
+ const missing=requiredColumns.filter(c=>!cols.includes(c));
+ if(!cols.includes(decName)||missing.length){console.warn('VizieR column mismatch',{coordName,missing,received:cols});throw Error('Немає очікуваних колонок у відповіді каталогу.');}
  const separator=lines.findIndex((l,i)=>i>idx&&l.split('\t').every(v=>/^-+$/.test(v.trim())));
  if(separator<0)throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
  const rows=lines.slice(separator+1).map(l=>{

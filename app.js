@@ -84,19 +84,22 @@ function parseTSV(s,coordName,requiredColumns=[]){
  if(/truncated|overflow/i.test(s))throw Error('Ліміт каталогу: зменште поле зору.');
  if(/QUERY_STATUS[^\n]*ERROR|#ERROR|#INFO[^\n]*Error=|<html/i.test(s))throw Error('Каталог повернув помилку.');
  const lines=s.split(/\r?\n/).filter(l=>l.trim()&&!l.startsWith('#'));
- const decName=coordName==='RA_ICRS'?'DE_ICRS':coordName==='RAdeg'?'DEdeg':'DEJ2000';
- const idx=lines.findIndex(l=>{const names=l.split('\t').map(x=>x.trim());return names.includes(coordName)&&names.includes(decName)});
+ const requestedPair=[coordName,coordName==='RA_ICRS'?'DE_ICRS':coordName==='RAdeg'?'DEdeg':'DEJ2000'];
+ const coordinatePairs=[requestedPair,['RAdeg','DEdeg'],['RAJ2000','DEJ2000'],['RA_ICRS','DE_ICRS']].filter((pair,i,all)=>all.findIndex(other=>other[0]===pair[0])===i);
+ let coordinatePair=null;
+ const idx=lines.findIndex(l=>{const names=l.split('\t').map(x=>x.trim());coordinatePair=coordinatePairs.find(pair=>names.includes(pair[0])&&names.includes(pair[1]))||null;return coordinatePair!==null});
  // ASU-TSV mirrors do not consistently emit #Column metadata. The actual
  // tabular header is authoritative; an empty VizieR table may contain only comments.
  if(idx<0){if(!lines.length&&/#Table\s/.test(s))return [];console.warn('VizieR header not found',{coordName,requiredColumns,preview:lines.slice(0,4)});throw Error('Немає очікуваних колонок у відповіді каталогу.')}
  const cols=lines[idx].split('\t').map(x=>x.trim());
- const missing=requiredColumns.filter(c=>!cols.includes(c));
- if(!cols.includes(decName)||missing.length){console.warn('VizieR column mismatch',{coordName,missing,received:cols});throw Error('Немає очікуваних колонок у відповіді каталогу.');}
+ const coordinateNames=new Set(coordinatePairs.flat()),missing=requiredColumns.filter(c=>!coordinateNames.has(c)&&!cols.includes(c));
+ if(!coordinatePair||missing.length){console.warn('VizieR column mismatch',{coordName,missing,received:cols});throw Error('Немає очікуваних колонок у відповіді каталогу.');}
+ const [raName,decName]=coordinatePair;
  const separator=lines.findIndex((l,i)=>i>idx&&l.split('\t').every(v=>/^-+$/.test(v.trim())));
  if(separator<0)throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
  const rows=lines.slice(separator+1).map(l=>{
   const values=l.split('\t');if(values.length!==cols.length)throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
-  const row=Object.fromEntries(values.map((v,i)=>[cols[i],v.trim()])),ra=num(row[coordName]),dec=num(row[decName]);
+  const row=Object.fromEntries(values.map((v,i)=>[cols[i],v.trim()])),ra=num(row[raName]),dec=num(row[decName]);
   if(!(Number.isFinite(ra)&&ra>=0&&ra<360&&Number.isFinite(dec)&&dec>=-90&&dec<=90))throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
   return {...row,_ra:ra,_dec:dec};
  });
@@ -114,8 +117,8 @@ async function query(cat,cols,c){
  // requested columns, coordinates and truncation before accepting any rows.
  return {rows:parseTSV(result.text,cols.find(c=>['RA_ICRS','RAJ2000','RAdeg'].includes(c)),cols),url:result.url,accessed_at:result.accessed_at};
 }
-const APASS_COLS=['RAdeg','DEdeg','B-V','e_B-V','nobs','u_e_Bmag','u_e_Vmag',"u_e_g'mag","u_e_r'mag","u_e_i'mag",'Bmag','e_Bmag','Vmag','e_Vmag',"g'mag","e_g'mag","r'mag","e_r'mag","i'mag","e_i'mag"];
-const PS1_COLS=['RAdeg','DEdeg','objID','f_objID','Qual','Epoch',...['g','r','i','z','y'].flatMap(b=>[b+'Flags','o_'+b+'mag',b+'magStd',b+'mag','e_'+b+'mag'])];
+const APASS_COLS=['RAJ2000','DEJ2000','B-V','e_B-V','nobs','u_e_Bmag','u_e_Vmag',"u_e_g'mag","u_e_r'mag","u_e_i'mag",'Bmag','e_Bmag','Vmag','e_Vmag',"g'mag","e_g'mag","r'mag","e_r'mag","i'mag","e_i'mag"];
+const PS1_COLS=['RAJ2000','DEJ2000','objID','f_objID','Qual','Epoch',...['g','r','i','z','y'].flatMap(b=>[b+'Flags','o_'+b+'mag',b+'magStd',b+'mag','e_'+b+'mag'])];
 const VARIABLE_CATALOGUES=[
  {catalog:'VSX',table:'B/vsx/vsx',cols:['RAJ2000','DEJ2000','Name','V','Type'],id:'Name'},
  {catalog:'ASAS-SN',table:'II/366/catv2021',cols:['RAJ2000','DEJ2000','ASASSN-V','Type'],id:'ASASSN-V'},
@@ -131,7 +134,7 @@ $('form').onsubmit=async e=>{
  try{
   const photoJobs=[{catalog:'APASS DR9',table:'II/336/apass9',cols:APASS_COLS}];
   if(cfg.dec+cfg.fov/120>=-30)photoJobs.push({catalog:'PS1 DR1',table:'II/349/ps1',cols:PS1_COLS});
-  const gaiaJob={catalog:'Gaia DR3',table:'I/355/gaiadr3',cols:['Source','RAdeg','DEdeg','RUWE','VarFlag','Plx','e_Plx','pmRA','e_pmRA','pmDE','e_pmDE','Dup','IPDfmp']};
+  const gaiaJob={catalog:'Gaia DR3',table:'I/355/gaiadr3',cols:['Source','RA_ICRS','DE_ICRS','RUWE','VarFlag','Plx','e_Plx','pmRA','e_pmRA','pmDE','e_pmDE','Dup','IPDfmp']};
   const jobs=[...photoJobs,gaiaJob,...VARIABLE_CATALOGUES];
   const responses=await Promise.allSettled(jobs.map(j=>query(j.table,j.cols,cfg)));
   const failed=responses.flatMap((r,i)=>r.status==='rejected'?[{catalog:jobs[i].catalog,error:r.reason}]:[]);
@@ -265,5 +268,6 @@ const siteBase=new URL('/agn-reference-fields/',location.origin);
 
 $('language').onclick=()=>{const next=lang==='uk'?'en':'uk';try{localStorage.setItem('referenceFieldLab.language',next)}catch{}location.href=new URL(next+'/',siteBase).href+location.hash};
 if(lang==='uk'){citation='ua';$('citationText').textContent=citations.ua;document.querySelectorAll('[data-cite]').forEach(b=>b.classList.toggle('active',b.dataset.cite==='ua'))}translateDOM();
+
 
 

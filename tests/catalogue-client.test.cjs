@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const {createClient,ENDPOINTS}=require('../catalogue-client.js');
-const params={'-source':'II/336/apass9','-c':'178.424 46.211833','-c.rm':8.7686,'-out.max':'20000','-out':"RAJ2000,DEJ2000,g'mag"};
+const params={'-source':'II/336/apass9','-c':'178.424 46.211833','-c.rm':8.7686,'-out.max':'20000','-out':['RAJ2000','DEJ2000',"g'mag"]};
 const ok=text=>({ok:true,text:async()=>text});
 (async()=>{
  const calls=[];
@@ -13,7 +13,10 @@ const ok=text=>({ok:true,text:async()=>text});
  }});
  const r=await request(params);
  assert.equal(r.text,'table');assert(r.url.startsWith(ENDPOINTS[1]));assert(!isNaN(Date.parse(r.accessed_at)));
- for(const u of calls)assert.deepEqual(Object.fromEntries(new URL(u).searchParams),Object.fromEntries(Object.entries(params).map(([k,v])=>[k,String(v)])));
+ for(const u of calls){
+  const q=new URL(u).searchParams;
+  for(const [key,value] of Object.entries(params))assert.deepEqual(q.getAll(key),Array.isArray(value)?value:[String(value)]);
+ }
  calls.length=0;await request(params);assert.equal(calls.length,1);assert(calls[0].startsWith(ENDPOINTS[1]));
  let n=0;
  const unavailable=createClient({fetchImpl:async()=>{n++;throw new TypeError('Failed to fetch')}});

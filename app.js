@@ -98,7 +98,7 @@ function parseTSV(s,coordName,requiredColumns=[]){
   const values=l.split('\t');if(values.length!==cols.length)throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
   const row=Object.fromEntries(values.map((v,i)=>[cols[i],v.trim()])),ra=num(row[coordName]),dec=num(row[decName]);
   if(!(Number.isFinite(ra)&&ra>=0&&ra<360&&Number.isFinite(dec)&&dec>=-90&&dec<=90))throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
-  return row;
+  return {...row,_ra:ra,_dec:dec};
  });
  if(rows.length>=20000)throw Error('Ліміт каталогу: зменште поле зору.');return rows;
 }
@@ -114,8 +114,8 @@ async function query(cat,cols,c){
  // requested columns, coordinates and truncation before accepting any rows.
  return {rows:parseTSV(result.text,cols.find(c=>['RA_ICRS','RAJ2000','RAdeg'].includes(c)),cols),url:result.url,accessed_at:result.accessed_at};
 }
-const APASS_COLS=['RAJ2000','DEJ2000','B-V','e_B-V','nobs','u_e_Bmag','u_e_Vmag',"u_e_g'mag","u_e_r'mag","u_e_i'mag",'Bmag','e_Bmag','Vmag','e_Vmag',"g'mag","e_g'mag","r'mag","e_r'mag","i'mag","e_i'mag"];
-const PS1_COLS=['RAJ2000','DEJ2000','objID','f_objID','Qual','Epoch',...['g','r','i','z','y'].flatMap(b=>[b+'Flags','o_'+b+'mag',b+'magStd',b+'mag','e_'+b+'mag'])];
+const APASS_COLS=['RAdeg','DEdeg','B-V','e_B-V','nobs','u_e_Bmag','u_e_Vmag',"u_e_g'mag","u_e_r'mag","u_e_i'mag",'Bmag','e_Bmag','Vmag','e_Vmag',"g'mag","e_g'mag","r'mag","e_r'mag","i'mag","e_i'mag"];
+const PS1_COLS=['RAdeg','DEdeg','objID','f_objID','Qual','Epoch',...['g','r','i','z','y'].flatMap(b=>[b+'Flags','o_'+b+'mag',b+'magStd',b+'mag','e_'+b+'mag'])];
 const VARIABLE_CATALOGUES=[
  {catalog:'VSX',table:'B/vsx/vsx',cols:['RAJ2000','DEJ2000','Name','V','Type'],id:'Name'},
  {catalog:'ASAS-SN',table:'II/366/catv2021',cols:['RAJ2000','DEJ2000','ASASSN-V','Type'],id:'ASASSN-V'},
@@ -131,7 +131,7 @@ $('form').onsubmit=async e=>{
  try{
   const photoJobs=[{catalog:'APASS DR9',table:'II/336/apass9',cols:APASS_COLS}];
   if(cfg.dec+cfg.fov/120>=-30)photoJobs.push({catalog:'PS1 DR1',table:'II/349/ps1',cols:PS1_COLS});
-  const gaiaJob={catalog:'Gaia DR3',table:'I/355/gaiadr3',cols:['Source','RA_ICRS','DE_ICRS','RUWE','VarFlag','Plx','e_Plx','pmRA','e_pmRA','pmDE','e_pmDE','Dup','IPDfmp']};
+  const gaiaJob={catalog:'Gaia DR3',table:'I/355/gaiadr3',cols:['Source','RAdeg','DEdeg','RUWE','VarFlag','Plx','e_Plx','pmRA','e_pmRA','pmDE','e_pmDE','Dup','IPDfmp']};
   const jobs=[...photoJobs,gaiaJob,...VARIABLE_CATALOGUES];
   const responses=await Promise.allSettled(jobs.map(j=>query(j.table,j.cols,cfg)));
   const failed=responses.flatMap((r,i)=>r.status==='rejected'?[{catalog:jobs[i].catalog,error:r.reason}]:[]);
@@ -149,11 +149,11 @@ $('form').onsubmit=async e=>{
   }
   const results=responses.map((r,i)=>({...jobs[i],...r.value})),available=results.slice(0,photoJobs.length),ga=results[photoJobs.length],variableResults=results.slice(photoJobs.length+1);
   if(available.reduce((n,p)=>n+p.rows.length,0)>12000||ga.rows.length>12000)throw Error('Занадто щільне поле для браузерного зіставлення. Зменште поле зору.');
-  const g=ga.rows.map(t=>({...t,ra:num(t.RA_ICRS),dec:num(t.DE_ICRS)})).filter(t=>Number.isFinite(t.ra)&&Number.isFinite(t.dec));
-  const variableLists=variableResults.map(q=>({...q,positions:q.rows.map(t=>({...t,ra:num(t.RAJ2000),dec:num(t.DEJ2000)}))}));
+  const g=ga.rows.map(t=>({...t,ra:num(t._ra),dec:num(t._dec)})).filter(t=>Number.isFinite(t.ra)&&Number.isFinite(t.dec));
+  const variableLists=variableResults.map(q=>({...q,positions:q.rows.map(t=>({...t,ra:num(t._ra),dec:num(t._dec)}))}));
   const neighborCache=new Map(),records=[];
   for(const ph of available)for(const p of ph.rows){
-   const position={ra:num(p.RAJ2000),dec:num(p.DEJ2000)};if(!Number.isFinite(position.ra)||!Number.isFinite(position.dec))continue;
+   const position={ra:num(p._ra),dec:num(p._dec)};if(!Number.isFinite(position.ra)||!Number.isFinite(position.dec))continue;
    const [x,y]=project(position.ra,position.dec,cfg);if(x<60||x>700||y<60||y>700)continue;
    const photometry=Science.measurements(p,ph.catalog);if(!photometry.length)continue;
    const s={...position,source:ph.catalog,photometry,catalogue_records:[{catalog:ph.catalog,raw:p}],...Science.objectChecks(p,ph.catalog),variability_checks:[]};

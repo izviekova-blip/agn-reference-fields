@@ -11,7 +11,12 @@
   return async function request(params){
    const endpoints=[preferred,...ENDPOINTS.filter(e=>e!==preferred)],attempts=[];
    for(const endpoint of endpoints){
-    const url=endpoint+'?'+new URLSearchParams(params),controller=new AbortController();
+    const search=new URLSearchParams();
+    for(const [name,value] of Object.entries(params)){
+     if(Array.isArray(value))value.forEach(item=>search.append(name,item));
+     else search.append(name,value);
+    }
+    const url=endpoint+'?'+search,controller=new AbortController();
     const timer=setTimeout(()=>controller.abort(),timeoutMs);
     try{
      // Keep the timeout active while downloading the body as well as the headers.

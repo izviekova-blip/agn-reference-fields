@@ -102,7 +102,8 @@ function parseTSV(s,coordName,requiredColumns=[]){
  if(rows.length>=20000)throw Error('Ліміт каталогу: зменште поле зору.');return rows;
 }
 async function query(cat,cols,c){
- const params={'-source':cat,'-c':`${c.ra} ${c.dec}`,'-c.rm':c.fov/Math.sqrt(2)+(c.isolation+c.match)/60+0.1,'-out.max':'20000','-out':cols.join(',')};
+ // VizieR ASU expects one -out parameter per requested column.
+ const params={'-source':cat,'-c':`${c.ra} ${c.dec}`,'-c.rm':c.fov/Math.sqrt(2)+(c.isolation+c.match)/60+0.1,'-out.max':'20000','-out':cols};
  let result;
  try{result=await requestCatalogue(params)}catch(error){
   if(error.name==='CatalogueConnectionError'){console.warn('VizieR connection failed',cat,error.attempts);throw error;}

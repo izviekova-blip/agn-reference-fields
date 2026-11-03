@@ -83,12 +83,13 @@ const requestCatalogue=CatalogueClient.createClient();
 function parseTSV(s,coordName,requiredColumns=[]){
  if(/truncated|overflow/i.test(s))throw Error('Ліміт каталогу: зменште поле зору.');
  if(/QUERY_STATUS[^\n]*ERROR|#ERROR|#INFO[^\n]*Error=|<html/i.test(s))throw Error('Каталог повернув помилку.');
- const declared=[...s.matchAll(/^#Column\s+(\S+)/gm)].map(m=>m[1]);
- if(requiredColumns.some(c=>!declared.includes(c)))throw Error('Немає очікуваних колонок у відповіді каталогу.');
  const lines=s.split(/\r?\n/).filter(l=>l.trim()&&!l.startsWith('#'));
- const idx=lines.findIndex(l=>l.split('\t').map(x=>x.trim()).includes(coordName));
- if(idx<0){if(!lines.length&&declared.includes(coordName)&&/#Table\s/.test(s))return [];throw Error('Немає очікуваних колонок у відповіді каталогу.')}
- const cols=lines[idx].split('\t').map(x=>x.trim()),decName=coordName==='RA_ICRS'?'DE_ICRS':coordName==='RAdeg'?'DEdeg':'DEJ2000';
+ const decName=coordName==='RA_ICRS'?'DE_ICRS':coordName==='RAdeg'?'DEdeg':'DEJ2000';
+ const idx=lines.findIndex(l=>{const names=l.split('\t').map(x=>x.trim());return names.includes(coordName)&&names.includes(decName)});
+ // ASU-TSV mirrors do not consistently emit #Column metadata. The actual
+ // tabular header is authoritative; an empty VizieR table may contain only comments.
+ if(idx<0){if(!lines.length&&/#Table\s/.test(s))return [];throw Error('Немає очікуваних колонок у відповіді каталогу.')}
+ const cols=lines[idx].split('\t').map(x=>x.trim());
  if(!cols.includes(decName)||requiredColumns.some(c=>!cols.includes(c)))throw Error('Немає очікуваних колонок у відповіді каталогу.');
  const separator=lines.findIndex((l,i)=>i>idx&&l.split('\t').every(v=>/^-+$/.test(v.trim())));
  if(separator<0)throw Error('Пошкоджена таблиця каталогу; відбір зупинено.');
@@ -182,7 +183,7 @@ $('form').onsubmit=async e=>{
  finally{busy=false;$('generate').disabled=false;$('generate').textContent=tr('Знайти зорі та побудувати ↗')}
 };
 $('selectAll').onclick=()=>{if(current){current.stars.forEach(s=>s.selected=s.accepted!==false);refreshSelection()}};$('clearAll').onclick=()=>{if(current){current.stars.forEach(s=>s.selected=false);refreshSelection()}};
-$('example').onclick=()=>loadCurated(fields[0]);$('white').onchange=draw;$('showRejected').onchange=render;
+$('example')?.remove();$('white').onchange=draw;$('showRejected').onchange=render;
 $('svg').onclick=()=>{if(current)download(chartSVG(),filename()+'.svg','image/svg+xml')};
 function updatePaperExport(){
  const count=current?.stars.filter(s=>s.accepted!==false&&s.selected===true).length||0;
@@ -244,7 +245,12 @@ async function loadSkyBackground(c){
 $('background').onclick=()=>{if(!current)return;if(bg){bg=null;skyStatus(current,'hidden');draw()}else loadSkyBackground(current)};
 
 function mini(f){let c={ra:f.ra_deg,dec:f.dec_deg,fov:f.field_fov_deg*60};return '<svg class="mini" viewBox="0 0 180 100" aria-hidden="true"><path d="M10 10H170V90H10Z M90 10V90 M10 50H170" fill="none" stroke="#cdd3c1"/>'+f.stars.map(s=>{let [x,y]=project(s.ra,s.dec,c);return `<circle cx="${10+(x-60)/640*160}" cy="${10+(y-60)/640*80}" r="2.5" fill="#6c825a"/>`}).join('')+'<path d="M85 50H95 M90 45V55" stroke="#aa9569"/></svg>'}
-function collection(){ $('fieldCards').innerHTML=fields.map((f,i)=>`<article class="field-card"><p>${esc(f.filter)} · ${f.stars.length} COMPARISON STARS</p><h3>${esc(f.name)}</h3>${mini(f)}<p>${esc(f.aliases)}</p><button data-field="${i}">Відкрити поле ↗</button><a href="${esc(f.source_url)}" target="_blank" rel="noopener">Оригінальна мапа стандартів й таблиці ↗</a></article>`).join('');$('fieldCards').querySelectorAll('[data-field]').forEach(b=>b.onclick=()=>loadCurated(fields[Number(b.dataset.field)],true));renderLocals();translateDOM()}
+function collection(){
+ document.querySelectorAll('a[href="#collection"]').forEach(link=>link.remove());
+ $('collection')?.querySelector('.section-heading')?.remove();
+ $('fieldCards')?.remove();
+ renderLocals();translateDOM();
+}
 function renderLocals(){$('localCards').innerHTML=locals.map((f,i)=>`<article class="field-card"><p>НА ЦЬОМУ ПРИСТРОЇ</p><h3>${esc(f.name)}</h3><p>${f.band==='all'?localText('Усі смуги','All bands'):esc(f.band)} · ${f.stars.length} зір</p><button data-local="${i}">Відкрити</button><button data-delete="${i}">Видалити локальну копію</button></article>`).join('');$('localCards').querySelectorAll('[data-local]').forEach(b=>b.onclick=()=>{current=structuredClone(locals[Number(b.dataset.local)]);bg=current.background_data||null;current.sky_status=bg?'ready':'idle';setForm();render();if(!bg)loadSkyBackground(current);$('builder').scrollIntoView({behavior:'smooth'})});$('localCards').querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{locals.splice(Number(b.dataset.delete),1);persist();renderLocals();translateDOM()})}
 function persist(){try{localStorage.setItem('referenceFieldLab.v1',JSON.stringify(locals));return true}catch(e){message('Збереження браузера недоступне. Експортуйте JSON.',true);return false}}
 $('save').onclick=()=>{if(!current)return;locals.push(provenance());if(persist()){message('Збережено в цьому браузері. Для резервної копії завантажте JSON.');renderLocals();translateDOM()}};
@@ -253,7 +259,7 @@ $('import').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{if(f.siz
 $('exportCollection').onclick=()=>download(JSON.stringify(locals,null,2),'reference-field-lab-collection.json','application/json');
 const citations={ack:'Finding charts were prepared with Reference Field Lab (Inna Izviekova). For curated sequences, cite AGN Reference Fields (https://doi.org/10.5281/zenodo.22036357), specifying the version used.',bib:'@misc{izviekova_agn_reference_fields,\n  author = {Izviekova, Inna},\n  title = {AGN Reference Fields},\n  publisher = {Zenodo},\n  doi = {10.5281/zenodo.22036357},\n  url = {https://doi.org/10.5281/zenodo.22036357},\n  note = {All-versions DOI; specify the exact release used}\n}',ua:'Мапи стандартів підготовлено за допомогою Reference Field Lab (Інна Ізвєкова). Для авторських послідовностей цитуйте AGN Reference Fields (https://doi.org/10.5281/zenodo.22036357), зазначаючи використану версію.'};let citation='ack';$('citationText').textContent=citations[citation];document.querySelectorAll('[data-cite]').forEach(b=>b.onclick=()=>{citation=b.dataset.cite;$('citationText').textContent=citations[citation];document.querySelectorAll('[data-cite]').forEach(x=>x.classList.toggle('active',x===b))});$('copyCitation').onclick=async()=>{try{await navigator.clipboard.writeText(citations[citation]);$('copyStatus').textContent=tr('Скопійовано.')}catch(e){$('copyStatus').textContent=tr('Виділіть і скопіюйте текст вручну.')}};
 const siteBase=new URL('/agn-reference-fields/',location.origin);
-(async()=>{try{let r=await fetch(new URL('fields.json',siteBase));if(!r.ok)throw Error('Не вдалося завантажити колекцію');fields=await r.json();try{locals=JSON.parse(localStorage.getItem('referenceFieldLab.v1')||'[]');if(!Array.isArray(locals))locals=[]}catch(e){locals=[]}collection();loadCurated(fields[0]);if(location.hash.startsWith('#field=')){let f=fields.find(f=>f.slug===location.hash.slice(7));if(f)loadCurated(f,true)}}catch(e){message(e.message,true)}})();
+(async()=>{try{try{locals=JSON.parse(localStorage.getItem('referenceFieldLab.v1')||'[]');if(!Array.isArray(locals))locals=[]}catch(e){locals=[]}collection()}catch(e){message(e.message,true)}})();
 
 $('language').onclick=()=>{const next=lang==='uk'?'en':'uk';try{localStorage.setItem('referenceFieldLab.language',next)}catch{}location.href=new URL(next+'/',siteBase).href+location.hash};
 if(lang==='uk'){citation='ua';$('citationText').textContent=citations.ua;document.querySelectorAll('[data-cite]').forEach(b=>b.classList.toggle('active',b.dataset.cite==='ua'))}translateDOM();

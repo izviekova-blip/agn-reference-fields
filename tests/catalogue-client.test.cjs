@@ -38,13 +38,17 @@ const ok=text=>({ok:true,text:async()=>text});
  vm.runInContext(source.slice(source.indexOf('function parseTSV('),source.indexOf('const APASS_COLS')),context);
  const cfg={ra:178.424,dec:46.211833,fov:12,isolation:10,match:1};
  await assert.rejects(context.query('test',['RAJ2000','DEJ2000'],cfg));
- body='#Table test\n#Column RAJ2000\n#Column DEJ2000\n';
+ // Real ASU-TSV mirrors may omit #Column metadata for a valid empty table.
+ body='#Table test\n';
  assert.equal((await context.query('test',['RAJ2000','DEJ2000'],cfg)).rows.length,0);
  body+='#INFO overflow\n';
  await assert.rejects(context.query('test',['RAJ2000','DEJ2000'],cfg));
  // Missing/malformed photometric columns must still fail closed.
  await assert.rejects(context.query('test',['RAJ2000','DEJ2000','Vmag'],cfg));
- body='#Table test\n#Column RAJ2000\n#Column DEJ2000\nRAJ2000\tDEJ2000\ndeg\tdeg\n---\t---\n178.4\t46.2\n#INFO overflow\n';
+ // Parse the actual header rather than depending on optional #Column lines.
+ body='#Table test\nRAJ2000\tDEJ2000\tVmag\ndeg\tdeg\tmag\n---\t---\t---\n178.4\t46.2\t15.2\n';
+ assert.equal((await context.query('test',['RAJ2000','DEJ2000','Vmag'],cfg)).rows[0].Vmag,'15.2');
+ body+='#INFO overflow\n';
  await assert.rejects(context.query('test',['RAJ2000','DEJ2000'],cfg));
  console.log('PASS: official mirror failover; identical queries; successful URL provenance; preferred endpoint; total failure; body timeout; HTTP rejection; strict app parser.');
 })().catch(e=>{console.error(e);process.exitCode=1});

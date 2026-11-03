@@ -52,9 +52,10 @@ const ok=text=>({ok:true,text:async()=>text});
  body='#Table test\nRAJ2000\tDEJ2000\tVmag\ndeg\tdeg\tmag\n---\t---\t---\n178.4\t46.2\t15.2\n';
  assert.equal((await context.query('test',['RAJ2000','DEJ2000','Vmag'],cfg)).rows[0].Vmag,'15.2');
  body='#Table test\nRAdeg\tDEdeg\tVmag\ndeg\tdeg\tmag\n---\t---\t---\n178.4\t46.2\t15.2\n';
- const rawCoordinates=(await context.query('test',['RAdeg','DEdeg','Vmag'],cfg)).rows[0];
+ const rawCoordinates=(await context.query('test',['RAJ2000','DEJ2000','Vmag'],cfg)).rows[0];
  assert.equal(rawCoordinates._ra,178.4);assert.equal(rawCoordinates._dec,46.2);
  body+='#INFO overflow\n';
  await assert.rejects(context.query('test',['RAJ2000','DEJ2000'],cfg));
  console.log('PASS: official mirror failover; identical queries; successful URL provenance; preferred endpoint; total failure; body timeout; HTTP rejection; strict app parser.');
 })().catch(e=>{console.error(e);process.exitCode=1});
+

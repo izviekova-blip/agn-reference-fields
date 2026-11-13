@@ -1,7 +1,7 @@
 (() => {
   const LIBRARY_SOURCES = [
-    'https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js',
-    'https://aladin.cds.unistra.fr/AladinLite/api/v3/3.8.2/aladin.js'
+    'https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.umd.cjs',
+    'https://unpkg.com/aladin-lite@3.8.2/dist/aladin.umd.cjs'
   ];
 
   const SURVEY_MIRRORS = [

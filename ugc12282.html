@@ -14,9 +14,7 @@
   <meta property="og:title" content="UGC 12282 finding chart & comparison stars">
   <meta property="og:description" content="UGC 12282 finding chart and three-star V-band comparison sequence used for differential photometry.">
   <meta property="og:url" content="https://izviekova-blip.github.io/agn-reference-fields/ugc12282.html">
-
-  <link rel="stylesheet" href="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.css">
-  <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css">
 
   <script type="application/ld+json">
   {
@@ -38,7 +36,7 @@
   }
   </script>
 
-  <script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
+  <script src="assets/aladin-resilient.js"></script>
 </head>
 
 <body>
@@ -165,9 +163,9 @@
 </footer>
 
 <script>
-A.init.then(() => {
+window.AGNFieldAladin.ready().then(({ survey }) => {
   const aladin = A.aladin('#field-aladin', {
-    survey: 'P/DSS2/color',
+    survey: survey.url,
     fov: 0.2,
     target: '344.730333 40.932194',
     showReticle: true,
@@ -215,6 +213,8 @@ A.init.then(() => {
     A.source(344.812843, 40.933759, {label:'2', star_id:'Reference star 2', V_mag:'14.721 ± 0.036', B_minus_V:'0.777 ± 0.085', description:'UGC 12282 comparison star 2'}),
     A.source(344.824663, 40.937892, {label:'3', star_id:'Reference star 3', V_mag:'14.658 ± 0.047', B_minus_V:'0.664 ± 0.124', description:'UGC 12282 comparison star 3'})
   ]);
+  const help = document.getElementById('chart-help');
+  if (help) help.textContent += ` Background: ${survey.label}.`;
 }).catch(err => {
   console.error('Aladin Lite initialization failed:', err);
   const help = document.getElementById('chart-help');

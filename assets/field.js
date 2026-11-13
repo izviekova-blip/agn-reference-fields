@@ -78,22 +78,31 @@ async function initField() {
     });
   });
 
-  if (!window.A) {
-    document.querySelector('.chart-help').textContent =
-      'Interactive chart could not load. The reference-star table remains available below.';
+  const chartHelp = document.querySelector('.chart-help');
+  let aladin;
+  let survey;
+
+  try {
+    const runtime = await window.AGNFieldAladin.ready();
+    survey = runtime.survey;
+    aladin = A.aladin('#field-aladin', {
+      survey: survey.url,
+      fov: f.field_fov_deg,
+      target: `${f.ra_deg} ${f.dec_deg}`,
+      showReticle: true,
+      showGotoControl: true,
+      showFullscreenControl: true,
+      showLayersControl: true,
+      showSimbadPointerControl: false
+    });
+  } catch (error) {
+    console.error('Aladin Lite initialization failed:', error);
+    if (chartHelp) {
+      chartHelp.textContent =
+        'Interactive chart could not load from the available Aladin/HiPS mirrors. The static finding chart and comparison-star table remain available below.';
+    }
     return;
   }
-
-  const aladin = A.aladin('#field-aladin', {
-    survey: 'P/DSS2/color',
-    fov: f.field_fov_deg,
-    target: `${f.ra_deg} ${f.dec_deg}`,
-    showReticle: true,
-    showGotoControl: true,
-    showFullscreenControl: true,
-    showLayersControl: true,
-    showSimbadPointerControl: true
-  });
 
   const targetCat = A.catalog({
     name: `${f.name} nucleus`,
@@ -138,5 +147,10 @@ async function initField() {
     coordinates: `${Number(s.ra).toFixed(6)}, ${Number(s.dec).toFixed(6)}`,
     description: `${f.name}: comparison star ${s.id}`
   })));
+
+  if (chartHelp && survey) {
+    chartHelp.textContent =
+      `AGN is labelled “AGN”; comparison stars are numbered to match the table. Background: ${survey.label}.`;
+  }
 }
 window.addEventListener('DOMContentLoaded', initField);

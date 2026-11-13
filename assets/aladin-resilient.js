@@ -1,7 +1,11 @@
 (() => {
-  const LIBRARY_SOURCES = [
-    'https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.umd.cjs',
-    'https://unpkg.com/aladin-lite@3.8.2/dist/aladin.umd.cjs'
+  const MODULE_SOURCES = [
+    'https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js',
+    'https://unpkg.com/aladin-lite@3.8.2/dist/aladin.js'
+  ];
+
+  const CLASSIC_SOURCES = [
+    'https://aladin.cds.unistra.fr/aladin_3.9.0-beta.js'
   ];
 
   const SURVEY_MIRRORS = [
@@ -25,7 +29,14 @@
   const CHECK_TIMEOUT_MS = 3500;
   let readyPromise;
 
-  function loadScript(url) {
+  async function loadModule(url) {
+    const module = await import(url);
+    const api = module.default || module.A;
+    if (!api) throw new Error(`Aladin Lite module has no browser API: ${url}`);
+    window.A = api;
+  }
+
+  function loadClassicScript(url) {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = url;
@@ -43,9 +54,18 @@
     if (window.A) return;
 
     let lastError;
-    for (const url of LIBRARY_SOURCES) {
+    for (const url of MODULE_SOURCES) {
       try {
-        await loadScript(url);
+        await loadModule(url);
+        if (window.A) return;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    for (const url of CLASSIC_SOURCES) {
+      try {
+        await loadClassicScript(url);
         if (window.A) return;
       } catch (error) {
         lastError = error;
